@@ -1,30 +1,53 @@
 package fragsoft.exposure;
 
+import fragsoft.exposure.ExposureValue.*;
+
+import java.math.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Iso {
 
-    public static final List<Integer> VALUES = new ArrayList<Integer>();
+    public static final List<ExposureValue> VALUES = new ArrayList<ExposureValue>();
 
     static {
-        VALUES.add(25); VALUES.add(32); VALUES.add(40);
-        VALUES.add(50); VALUES.add(64); VALUES.add(80);
-        VALUES.add(100); VALUES.add(125); VALUES.add(160);
-        VALUES.add(200); VALUES.add(250); VALUES.add(320);
-        VALUES.add(400); VALUES.add(500); VALUES.add(640);
-        VALUES.add(800); VALUES.add(1000); VALUES.add(1250);
-        VALUES.add(1600); VALUES.add(2000); VALUES.add(2500);
-        VALUES.add(3200); VALUES.add(4000); VALUES.add(5000);
-        VALUES.add(6400); VALUES.add(8000); VALUES.add(10000);
-        VALUES.add(12800); VALUES.add(16000); VALUES.add(20000);
-        VALUES.add(25600);
+        VALUES.add(new ExposureValue("25", new BigDecimal(25), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("32", new BigDecimal(32), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("40", new BigDecimal(40), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("50", new BigDecimal(50), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("64", new BigDecimal(64), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("80", new BigDecimal(80), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("100", new BigDecimal(100), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("125", new BigDecimal(125), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("160", new BigDecimal(160), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("200", new BigDecimal(200), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("250", new BigDecimal(250), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("320", new BigDecimal(320), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("400", new BigDecimal(400), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("500", new BigDecimal(500), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("640", new BigDecimal(640), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("800", new BigDecimal(800), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("1000", new BigDecimal(1000), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("1250", new BigDecimal(1250), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("1600", new BigDecimal(1600), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("2000", new BigDecimal(2000), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("2500", new BigDecimal(2500), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("3200", new BigDecimal(3200), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("4000", new BigDecimal(4000), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("5000", new BigDecimal(5000), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("6400", new BigDecimal(6400), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("8000", new BigDecimal(8000), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("10000", new BigDecimal(10000), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("12800", new BigDecimal(12800), Type.ISO, ExposureValue.Granularity.FULL));
+        VALUES.add(new ExposureValue("16000", new BigDecimal(16000), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("20000", new BigDecimal(20000), Type.ISO, Granularity.THIRD));
+        VALUES.add(new ExposureValue("25600", new BigDecimal(25600), Type.ISO, ExposureValue.Granularity.FULL));
     }
 
     private Integer index;
-    private Integer value;
+    private ExposureValue value;
 
-    public Iso(Integer value) {
+    public Iso(ExposureValue value) {
         setValue(value);
     }
 
@@ -32,12 +55,12 @@ public class Iso {
         return index;
     }
 
-    public Integer getValue() {
+    public ExposureValue getValue() {
         return value;
     }
 
-    private void setValue(Integer value) {
-        for (Integer iso : VALUES) {
+    private void setValue(ExposureValue value) {
+        for (ExposureValue iso : VALUES) {
             if (value.equals(iso)) {
                 this.value = value;
                 this.index = VALUES.indexOf(iso);
@@ -47,7 +70,7 @@ public class Iso {
 
     @Override
     public String toString() {
-        return "ISO[" + value + "]";
+        return "ISO[" + value.getLabel() + "]";
     }
 
 }

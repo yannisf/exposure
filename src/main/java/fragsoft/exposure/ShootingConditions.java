@@ -2,6 +2,10 @@ package fragsoft.exposure;
 
 public class ShootingConditions {
 
+    public enum Priority {
+        APERTURE, SHUTTER
+    }
+
     private Iso isoSensitivity;
     private Aperture aperture;
     private Shutter shutterSpeed;
