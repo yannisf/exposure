@@ -6,9 +6,9 @@ import java.math.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Iso {
+public class Iso extends ExposureParameter {
 
-    public static final List<ExposureValue> VALUES = new ArrayList<ExposureValue>();
+    private static final List<ExposureValue> VALUES = new ArrayList<ExposureValue>();
 
     static {
         VALUES.add(new ExposureValue("25", new BigDecimal(25), Type.ISO, ExposureValue.Granularity.FULL));
@@ -44,33 +44,18 @@ public class Iso {
         VALUES.add(new ExposureValue("25600", new BigDecimal(25600), Type.ISO, ExposureValue.Granularity.FULL));
     }
 
-    private Integer index;
-    private ExposureValue value;
-
-    public Iso(ExposureValue value) {
-        setValue(value);
-    }
-
-    public Integer getIndex() {
-        return index;
-    }
-
-    public ExposureValue getValue() {
-        return value;
-    }
-
-    private void setValue(ExposureValue value) {
-        for (ExposureValue iso : VALUES) {
-            if (value.equals(iso)) {
-                this.value = value;
-                this.index = VALUES.indexOf(iso);
-            }
-        }
+    public Iso(String label) {
+        super(label);
     }
 
     @Override
-    public String toString() {
-        return "ISO[" + value.getLabel() + "]";
+    protected List<ExposureValue> getValues() {
+        return VALUES;
+    }
+
+    @Override
+    public ExposureParameter displaceBy(Integer displacement) {
+        return new Iso(getValues().get(getIndex() + displacement).getLabel());
     }
 
 }

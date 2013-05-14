@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Aperture {
+public class Aperture extends ExposureParameter {
 
-    public static final List<ExposureValue> VALUES = new ArrayList<ExposureValue>();
+    private static final List<ExposureValue> VALUES = new ArrayList<ExposureValue>();
 
     static {
         VALUES.add(new ExposureValue("f/1", new BigDecimal(1), Type.APERTURE, ExposureValue.Granularity.FULL));
@@ -46,37 +46,18 @@ public class Aperture {
         VALUES.add(new ExposureValue("f/40", new BigDecimal(40), Type.APERTURE, Granularity.THIRD));
     }
 
-    private Integer index;
-    private ExposureValue value;
-
-    public Aperture(ExposureValue value) {
-        setValue(value);
-    }
-
-    public Integer getIndex() {
-        return index;
-    }
-
-    public ExposureValue getValue() {
-        return value;
-    }
-
-    private void setValue(ExposureValue value) {
-        for (ExposureValue aperture : VALUES) {
-            if (aperture.equals(value)) {
-                this.value = value;
-                this.index = VALUES.indexOf(aperture);
-            }
-        }
-    }
-
-    public Aperture displaceBy(Integer displacement) {
-        return new Aperture(VALUES.get(index + displacement));
+    public Aperture(String label) {
+        super(label);
     }
 
     @Override
-    public String toString() {
-        return "A[" + value.getLabel() + "]";
+    protected List<ExposureValue> getValues() {
+        return VALUES;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public ExposureParameter displaceBy(Integer displacement) {
+        return new Aperture(getValues().get(getIndex() + displacement).getLabel());
     }
 
 }
