@@ -1,10 +1,10 @@
-package fragsoft.exposure;
+package fragsoft.exposure.parameters;
 
-import fragsoft.exposure.ExposureValue.*;
+import fragsoft.exposure.parameters.ExposureValue.*;
+import fragsoft.exposure.exception.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Aperture extends ExposureParameter {
 
@@ -46,18 +46,27 @@ public class Aperture extends ExposureParameter {
         VALUES.add(new ExposureValue("f/40", new BigDecimal(40), Type.APERTURE, Granularity.THIRD));
     }
 
-    public Aperture(String label) {
+    public Aperture(int index) throws ExposureOutOfScaleException {
+        super(index);
+    }
+
+    public Aperture(String label) throws NoMatchException {
         super(label);
     }
 
     @Override
     protected List<ExposureValue> getValues() {
-        return VALUES;  //To change body of implemented methods use File | Settings | File Templates.
+        return Collections.unmodifiableList(VALUES);
     }
 
     @Override
-    public ExposureParameter displaceBy(Integer displacement) {
-        return new Aperture(getValues().get(getIndex() + displacement).getLabel());
+    public Aperture displaceBy(Integer displacement) throws ExposureOutOfScaleException {
+        int displacedIndex = getIndex() + displacement;
+        return new Aperture(displacedIndex);
+    }
+
+    @Override
+    void intelligentExposureValueFromLabel(String label) throws NoMatchException {
     }
 
 }

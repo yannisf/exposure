@@ -1,6 +1,7 @@
-package fragsoft.exposure;
+package fragsoft.exposure.parameters;
 
-import fragsoft.exposure.ExposureValue.*;
+import fragsoft.exposure.parameters.ExposureValue.*;
+import fragsoft.exposure.exception.*;
 
 import java.math.*;
 import java.util.ArrayList;
@@ -44,7 +45,11 @@ public class Iso extends ExposureParameter {
         VALUES.add(new ExposureValue("25600", new BigDecimal(25600), Type.ISO, ExposureValue.Granularity.FULL));
     }
 
-    public Iso(String label) {
+    public Iso(int index) throws ExposureOutOfScaleException {
+        super(index);
+    }
+
+    public Iso(String label) throws NoMatchException {
         super(label);
     }
 
@@ -54,8 +59,13 @@ public class Iso extends ExposureParameter {
     }
 
     @Override
-    public ExposureParameter displaceBy(Integer displacement) {
-        return new Iso(getValues().get(getIndex() + displacement).getLabel());
+    public Iso displaceBy(Integer displacement) throws ExposureOutOfScaleException {
+        int displacedIndex = getIndex() + displacement;
+        return new Iso(displacedIndex);
+    }
+
+    @Override
+    void intelligentExposureValueFromLabel(String label) throws NoMatchException {
     }
 
 }

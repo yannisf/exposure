@@ -1,6 +1,7 @@
-package fragsoft.exposure;
+package fragsoft.exposure.parameters;
 
-import fragsoft.exposure.ExposureValue.*;
+import fragsoft.exposure.parameters.ExposureValue.*;
+import fragsoft.exposure.exception.*;
 
 import java.math.*;
 import java.util.ArrayList;
@@ -80,7 +81,11 @@ public class Shutter extends ExposureParameter {
         VALUES.add(new ExposureValue("480", new BigDecimal(480), Type.SHUTTER, Granularity.FULL));
     }
 
-    public Shutter(String label) {
+    public Shutter(int index) throws ExposureOutOfScaleException {
+        super(index);
+    }
+
+    public Shutter(String label) throws NoMatchException {
         super(label);
     }
 
@@ -90,8 +95,12 @@ public class Shutter extends ExposureParameter {
     }
 
     @Override
-    public ExposureParameter displaceBy(Integer displacement) {
-        return new Shutter(getValues().get(getIndex() + displacement).getLabel());
+    public Shutter displaceBy(Integer displacement) throws ExposureOutOfScaleException{
+        return new Shutter(getIndex() + displacement);
+    }
+
+    @Override
+    void intelligentExposureValueFromLabel(String label) throws NoMatchException {
     }
 
 }

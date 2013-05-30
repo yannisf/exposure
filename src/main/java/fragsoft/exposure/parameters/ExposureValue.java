@@ -1,4 +1,4 @@
-package fragsoft.exposure;
+package fragsoft.exposure.parameters;
 
 import java.math.BigDecimal;
 
