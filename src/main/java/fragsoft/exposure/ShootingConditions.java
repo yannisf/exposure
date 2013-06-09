@@ -1,9 +1,16 @@
 package fragsoft.exposure;
 
-import fragsoft.exposure.exception.*;
-import fragsoft.exposure.parameters.*;
+import fragsoft.exposure.exception.ExposureOutOfScaleException;
+import fragsoft.exposure.exception.NoMatchException;
+import fragsoft.exposure.parameters.Aperture;
+import fragsoft.exposure.parameters.Iso;
+import fragsoft.exposure.parameters.Shutter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ShootingConditions {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ShootingConditions.class);
 
     public enum Priority {
         APERTURE, SHUTTER
@@ -46,25 +53,25 @@ public class ShootingConditions {
     }
 
     public void updateAperture(String setUpdatedAperture) throws NoMatchException, ExposureOutOfScaleException {
-        System.out.println("BEFORE: " + this);
+        LOG.info("BEFORE {}", this);
         Aperture updatedAperture = new Aperture(setUpdatedAperture);
         Integer indexDifference = updatedAperture.getIndex() - aperture.getIndex();
         aperture = updatedAperture;
         shutterSpeed = shutterSpeed.displaceBy(indexDifference);
-        System.out.println("AFTER: " + this);
+        LOG.info("AFTER {}", this);
     }
 
     public void updateShutterSpeed(String setUpdatedShutterSpeed) throws NoMatchException, ExposureOutOfScaleException {
-        System.out.println("BEFORE: " + this);
+        LOG.info("BEFORE {}", this);
         Shutter updatedShutterSpeed = new Shutter(setUpdatedShutterSpeed);
         Integer indexDifference = updatedShutterSpeed.getIndex() - aperture.getIndex();
         shutterSpeed = updatedShutterSpeed;
         aperture = aperture.displaceBy(indexDifference);
-        System.out.println("AFTER: " + this);
+        LOG.info("AFTER {}", this);
     }
 
     public void updateIso(String setIso) throws NoMatchException, ExposureOutOfScaleException {
-        System.out.println("BEFORE: " + this);
+        LOG.info("BEFORE {}", this);
         Iso updatedIso = new Iso(setIso);
         Integer indexDifference = updatedIso.getIndex() - isoSensitivity.getIndex();
         priorityControl();
@@ -74,12 +81,14 @@ public class ShootingConditions {
             aperture = aperture.displaceBy(indexDifference);
         }
         isoSensitivity = updatedIso;
-        System.out.println("AFTER: " + this);
+        LOG.info("AFTER {}", this);
     }
 
     private void priorityControl() {
-        if (priority == null) {
-            System.out.println("Priority not set, assuming aperture. ");
+        if (priority != null) {
+            LOG.debug("Priority already set to {}", priority);
+        } else {
+            LOG.info("Priority not set, assuming aperture");
             priority = Priority.APERTURE;
         }
     }
@@ -87,13 +96,17 @@ public class ShootingConditions {
 
     @Override
     public String toString() {
-        return isoSensitivity+ " " + aperture + " " + shutterSpeed;
+        return isoSensitivity + " " + aperture + " " + shutterSpeed;
     }
 
     public static final void main(String[] args) throws NoMatchException, ExposureOutOfScaleException {
         ShootingConditions conditions = new ShootingConditions("200", "f/2.8", "1");
         conditions.setPriority(Priority.SHUTTER);
-        conditions.updateIso("320");
+        try {
+            conditions.updateAperture("f5.6.36");
+        } catch (NoMatchException nme) {
+            LOG.warn("Could not evaluate value");
+        }
     }
 
 }

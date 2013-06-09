@@ -5,9 +5,19 @@ import java.math.BigDecimal;
 public class ExposureValue {
 
     public enum Type {
-        ISO,
-        APERTURE,
-        SHUTTER
+        ISO("ISO"),
+        APERTURE("A"),
+        SHUTTER("S");
+
+        private String symbol;
+
+        Type(String symbol) {
+            this.symbol = symbol;
+        }
+
+        public String getSymbol() {
+            return this.symbol;
+        }
     }
 
     public enum Granularity {
