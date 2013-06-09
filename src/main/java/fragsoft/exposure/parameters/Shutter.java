@@ -56,7 +56,7 @@ public class Shutter extends ExposureParameter {
         VALUES.add(new ExposureValue("1/1.6", new BigDecimal(0.625), TYPE, Granularity.THIRD));
         VALUES.add(new ExposureValue("1/1.3", new BigDecimal(0.769), TYPE, Granularity.THIRD));
         VALUES.add(new ExposureValue("1", new BigDecimal(1), TYPE, Granularity.FULL));
-        VALUES.add(new ExposureValue("1.3", new BigDecimal(1.6), TYPE, Granularity.THIRD));
+        VALUES.add(new ExposureValue("1.3", new BigDecimal(1.3), TYPE, Granularity.THIRD));
         VALUES.add(new ExposureValue("1.6", new BigDecimal(1.6), TYPE, Granularity.THIRD));
         VALUES.add(new ExposureValue("2", new BigDecimal(2), TYPE, Granularity.FULL));
         VALUES.add(new ExposureValue("2.5", new BigDecimal(2.5), TYPE, Granularity.THIRD));
