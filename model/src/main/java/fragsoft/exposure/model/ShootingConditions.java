@@ -13,7 +13,7 @@ public class ShootingConditions {
     private static final Logger LOG = LoggerFactory.getLogger(ShootingConditions.class);
 
     public enum Priority {
-        APERTURE, SHUTTER
+        APERTURE, SHUTTER, MANUAL
     }
 
     private Iso isoSensitivity;

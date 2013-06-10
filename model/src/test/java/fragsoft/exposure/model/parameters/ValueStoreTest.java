@@ -4,17 +4,16 @@ import fragsoft.exposure.model.exception.ExposureOutOfScaleException;
 import junit.framework.Assert;
 import org.testng.annotations.Test;
 
-import java.math.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class ValueStoreTest {
 
     @Test
     public void testApertureValuesIncreasing() throws ExposureOutOfScaleException {
-        Aperture aperture = new Aperture(0);
-        List<ExposureValue> values = aperture.getValues();
         BigDecimal previousValue = null;
-        for (ExposureValue value : values) {
+        for (ExposureValue value : ValuesStore.getApertureValues()) {
             Assert.assertTrue(value.getLabel().startsWith("f/"));
             if (previousValue != null) {
                 Assert.assertTrue(value.getValue().compareTo(previousValue) > 0);
@@ -25,24 +24,21 @@ public class ValueStoreTest {
 
     @Test
     public void testApertureValuesFullThird() throws ExposureOutOfScaleException {
-        Aperture aperture = new Aperture(0);
-        List<ExposureValue> values = aperture.getValues();
+        List<ExposureValue> values = ValuesStore.getApertureValues();
         for (int i = 0; i < values.size(); i += 3) {
-            Assert.assertSame(values.get(i).getGranularity(), ExposureValue.Granularity.FULL);
+            Assert.assertSame(values.get(i).getGranularity(), ValuesStore.ValuesGranularity.FULL);
             if (i + 1 < values.size()) {
-                Assert.assertSame(values.get(i + 1).getGranularity(), ExposureValue.Granularity.THIRD);
+                Assert.assertSame(values.get(i + 1).getGranularity(), ValuesStore.ValuesGranularity.THIRD);
             }
             if (i + 2 < values.size()) {
-                Assert.assertSame(values.get(i + 2).getGranularity(), ExposureValue.Granularity.THIRD);
+                Assert.assertSame(values.get(i + 2).getGranularity(), ValuesStore.ValuesGranularity.THIRD);
             }
         }
     }
 
     @Test
     public void testApertureValueLabel() throws ExposureOutOfScaleException {
-        Aperture aperture = new Aperture(0);
-        List<ExposureValue> values = aperture.getValues();
-        for (ExposureValue value : values) {
+        for (ExposureValue value : ValuesStore.getApertureValues()) {
             Assert.assertTrue(value.getLabel().startsWith("f/"));
             String pureValueFromLabel = value.getLabel().replaceAll("[^\\d.]", "");
             BigDecimal valueFromLabel = new BigDecimal(pureValueFromLabel);
@@ -52,10 +48,8 @@ public class ValueStoreTest {
 
     @Test
     public void testShutterValuesIncreasing() throws ExposureOutOfScaleException {
-        Shutter shutter = new Shutter(0);
-        List<ExposureValue> values = shutter.getValues();
         BigDecimal previousValue = null;
-        for (ExposureValue value : values) {
+        for (ExposureValue value : ValuesStore.getShutterValues()) {
             if (previousValue != null) {
                 Assert.assertTrue(value.getValue().compareTo(previousValue) > 0);
             }
@@ -65,15 +59,14 @@ public class ValueStoreTest {
 
     @Test
     public void testShutterValuesFullThird() throws ExposureOutOfScaleException {
-        Shutter shutter = new Shutter(0);
-        List<ExposureValue> values = shutter.getValues();
+        List<ExposureValue> values = ValuesStore.getShutterValues();
         for (int i = 0; i < values.size(); i += 3) {
-            Assert.assertSame(values.get(i).getGranularity(), ExposureValue.Granularity.FULL);
+            Assert.assertSame(values.get(i).getGranularity(), ValuesStore.ValuesGranularity.FULL);
             if (i + 1 < values.size()) {
-                Assert.assertSame(values.get(i + 1).getGranularity(), ExposureValue.Granularity.THIRD);
+                Assert.assertSame(values.get(i + 1).getGranularity(), ValuesStore.ValuesGranularity.THIRD);
             }
             if (i + 2 < values.size()) {
-                Assert.assertSame(values.get(i + 2).getGranularity(), ExposureValue.Granularity.THIRD);
+                Assert.assertSame(values.get(i + 2).getGranularity(), ValuesStore.ValuesGranularity.THIRD);
             }
         }
     }
@@ -81,9 +74,7 @@ public class ValueStoreTest {
     @Test
     public void testShutterValueLabel() throws ExposureOutOfScaleException {
         BigDecimal accuracy = new BigDecimal("0.00000001");
-        Shutter shutter = new Shutter(0);
-        List<ExposureValue> values = shutter.getValues();
-        for (ExposureValue value : values) {
+        for (ExposureValue value : ValuesStore.getShutterValues()) {
             BigDecimal valueFromLabel;
             if (value.getLabel().contains("/")) {
                 String[] strings = value.getLabel().split("/");
@@ -99,10 +90,8 @@ public class ValueStoreTest {
 
     @Test
     public void testIsoValuesIncreasing() throws ExposureOutOfScaleException {
-        Iso iso = new Iso(0);
-        List<ExposureValue> values = iso.getValues();
         BigDecimal previousValue = null;
-        for (ExposureValue value : values) {
+        for (ExposureValue value : ValuesStore.getIsoValues()) {
             if (previousValue != null) {
                 Assert.assertTrue("Discontinuity on ISO label " + value.getLabel(),
                         value.getValue().compareTo(previousValue) > 0);
@@ -113,24 +102,21 @@ public class ValueStoreTest {
 
     @Test
     public void testIsoValuesFullThird() throws ExposureOutOfScaleException {
-        Iso iso = new Iso(0);
-        List<ExposureValue> values = iso.getValues();
+        List<ExposureValue> values = ValuesStore.getIsoValues();
         for (int i = 0; i < values.size(); i += 3) {
-            Assert.assertSame(values.get(i).getGranularity(), ExposureValue.Granularity.FULL);
+            Assert.assertSame(values.get(i).getGranularity(), ValuesStore.ValuesGranularity.FULL);
             if (i + 1 < values.size()) {
-                Assert.assertSame(values.get(i + 1).getGranularity(), ExposureValue.Granularity.THIRD);
+                Assert.assertSame(values.get(i + 1).getGranularity(), ValuesStore.ValuesGranularity.THIRD);
             }
             if (i + 2 < values.size()) {
-                Assert.assertSame(values.get(i + 2).getGranularity(), ExposureValue.Granularity.THIRD);
+                Assert.assertSame(values.get(i + 2).getGranularity(), ValuesStore.ValuesGranularity.THIRD);
             }
         }
     }
 
     @Test
     public void testIsoValueLabel() throws ExposureOutOfScaleException {
-        Iso iso = new Iso(0);
-        List<ExposureValue> values = iso.getValues();
-        for (ExposureValue value : values) {
+        for (ExposureValue value : ValuesStore.getIsoValues()) {
             String pureValueFromLabel = value.getLabel();
             BigDecimal valueFromLabel = new BigDecimal(pureValueFromLabel);
             Assert.assertEquals(valueFromLabel, value.getValue());

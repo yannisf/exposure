@@ -4,33 +4,12 @@ import java.math.BigDecimal;
 
 public class ExposureValue {
 
-    public enum Type {
-        ISO("ISO"),
-        APERTURE("A"),
-        SHUTTER("S");
+    private final String label;
+    private final BigDecimal value;
+    private final ExposureParameterType type;
+    private final ValuesStore.ValuesGranularity granularity;
 
-        private String symbol;
-
-        Type(String symbol) {
-            this.symbol = symbol;
-        }
-
-        public String getSymbol() {
-            return this.symbol;
-        }
-    }
-
-    public enum Granularity {
-        FULL,
-        THIRD
-    }
-
-    private String label;
-    private BigDecimal value;
-    private Type type;
-    private Granularity granularity;
-
-    public ExposureValue(String label, BigDecimal value, Type type, Granularity granularity) {
+    public ExposureValue(String label, BigDecimal value, ExposureParameterType type, ValuesStore.ValuesGranularity granularity) {
         this.label = label;
         this.value = value;
         this.type = type;
@@ -45,11 +24,11 @@ public class ExposureValue {
         return value;
     }
 
-    public Type getType() {
+    public ExposureParameterType getType() {
         return type;
     }
 
-    public Granularity getGranularity() {
+    public ValuesStore.ValuesGranularity getGranularity() {
         return granularity;
     }
 
