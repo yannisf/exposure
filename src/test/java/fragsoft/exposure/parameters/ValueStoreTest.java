@@ -4,7 +4,7 @@ import fragsoft.exposure.exception.ExposureOutOfScaleException;
 import junit.framework.Assert;
 import org.testng.annotations.Test;
 
-import java.math.BigDecimal;
+import java.math.*;
 import java.util.List;
 
 public class ValueStoreTest {
@@ -38,6 +38,7 @@ public class ValueStoreTest {
         }
     }
 
+    @Test
     public void testApertureValueLabel() throws ExposureOutOfScaleException {
         Aperture aperture = new Aperture(0);
         List<ExposureValue> values = aperture.getValues();
@@ -77,22 +78,24 @@ public class ValueStoreTest {
         }
     }
 
-//    @Test
-//    public void testShutterValueLabel() throws ExposureOutOfScaleException {
-//        Shutter shutter = new Shutter(0);
-//        List<ExposureValue> values = shutter.getValues();
-//        for (ExposureValue value : values) {
-//            BigDecimal valueFromLabel = null;
-//            if (value.getLabel().contains("/")) {
-//                String[] strings = value.getLabel().split("/");
-//                valueFromLabel = new BigDecimal(strings[0]).divide(new BigDecimal(strings[1]), 5);
-//                System.out.println(valueFromLabel);
-//            } else {
-//                valueFromLabel = new BigDecimal(value.getLabel(), 5);
-//            }
-//            System.out.println(valueFromLabel.compareTo(value.getValue()));
-//        }
-//    }
+    @Test
+    public void testShutterValueLabel() throws ExposureOutOfScaleException {
+        BigDecimal accuracy = new BigDecimal("0.00000001");
+        Shutter shutter = new Shutter(0);
+        List<ExposureValue> values = shutter.getValues();
+        for (ExposureValue value : values) {
+            BigDecimal valueFromLabel;
+            if (value.getLabel().contains("/")) {
+                String[] strings = value.getLabel().split("/");
+                valueFromLabel = new BigDecimal(strings[0]).divide(new BigDecimal(strings[1]), 8, RoundingMode.HALF_DOWN);
+            } else {
+                valueFromLabel = new BigDecimal(value.getLabel()).setScale(8);
+            }
+
+            Assert.assertFalse("Shutter label " + value.getLabel() + " does not match",
+                    valueFromLabel.subtract(value.getValue()).abs().compareTo(accuracy) > 0);
+        }
+    }
 
     @Test
     public void testIsoValuesIncreasing() throws ExposureOutOfScaleException {
@@ -101,7 +104,8 @@ public class ValueStoreTest {
         BigDecimal previousValue = null;
         for (ExposureValue value : values) {
             if (previousValue != null) {
-                Assert.assertTrue(value.getValue().compareTo(previousValue) > 0);
+                Assert.assertTrue("Discontinuity on ISO label " + value.getLabel(),
+                        value.getValue().compareTo(previousValue) > 0);
             }
             previousValue = value.getValue();
         }
@@ -122,11 +126,12 @@ public class ValueStoreTest {
         }
     }
 
+    @Test
     public void testIsoValueLabel() throws ExposureOutOfScaleException {
         Iso iso = new Iso(0);
         List<ExposureValue> values = iso.getValues();
         for (ExposureValue value : values) {
-            String pureValueFromLabel = value.getLabel().replaceAll("[^\\d.]", "");
+            String pureValueFromLabel = value.getLabel();
             BigDecimal valueFromLabel = new BigDecimal(pureValueFromLabel);
             Assert.assertEquals(valueFromLabel, value.getValue());
         }
