@@ -14,34 +14,30 @@
 <div class="row">
     <form class="form-horizontal">
 
-        <div class="span6">
-            <div class="control-group" ng-controller="LoadIsos">
+        <div class="span6" ng-controller="InitializeController">
+            <div class="control-group">
                 <label class="control-label" for="initialIso">ISO</label>
 
                 <div class="controls">
-                    <select id="initialIso" name="initialIso">
-                        <option ng-repeat="iso in isos" value="{{iso.index}}">{{iso.label}}</option>
-                    </select>
+                    <select id="initialIso" ng-model="isoSet" ng-options="iso.text for iso in isos"></select>
                 </div>
             </div>
 
-            <div class="control-group" ng-controller="LoadApertures">
+            <div class="control-group">
                 <label class="control-label" for="initialAperture">Aperture</label>
 
                 <div class="controls">
-                    <select id="initialAperture" name="initialAperture">
-                        <option ng-repeat="aperture in apertures" value="{{aperture.index}}">{{aperture.label}}</option>
-                    </select>
+                    <select id="initialAperture" ng-model="apertureSet"
+                            ng-options="aperture.text for aperture in apertures"></select>
                 </div>
             </div>
 
-            <div class="control-group" ng-controller="LoadShutters">
+            <div class="control-group">
                 <label class="control-label" for="initialShutter">Shutter</label>
 
                 <div class="controls">
-                    <select id="initialShutter" name="initialShutter">
-                        <option ng-repeat="shutter in shutters" value="{{shutter.index}}">{{shutter.label}}</option>
-                    </select>
+                    <select id="initialShutter" ng-model="shutterSet"
+                            ng-options="shutter.text for shutter in shutters"></select>
                 </div>
             </div>
 
@@ -50,9 +46,15 @@
                     <button type="submit" class="btn">Set</button>
                 </div>
             </div>
+
+            <div>
+                ISO:{{isoSet.text}}/A:{{apertureSet.text}}/S:{{shutterSet.text}}
+            </div>
         </div>
 
-        <div class="span6">TODO</div>
+        <div class="span6">
+            TODO
+        </div>
     </form>
 </div>
 

@@ -1,20 +1,18 @@
 var exposureModule = angular.module('exposure', []);
 
-exposureModule.controller('LoadApertures',
+exposureModule.controller('InitializeController',
+
     function($scope) {
-        var apertures = [{index:0, label:"f/1.0"}, {index:1, label:"f/2.0"}];
+        var apertures = [{text:"f/1.0"}, {text:"f/2.0"}];
         $scope.apertures = apertures;
-});
+        $scope.apertureSet=apertures[0];
 
-exposureModule.controller('LoadIsos',
-    function($scope) {
-        var isos  = [{index:0, label:"100"}, {index:1, label:"200"}];
+        var isos  = [{text:"100"}, {text:"200"}];
         $scope.isos = isos;
-});
+        $scope.isoSet=isos[0];
 
-exposureModule.controller('LoadShutters',
-    function($scope) {
-        var shutters = [{index:0, label:"1/1000"}, {index:1, label:"1/500"}];
+        var shutters = [{text:"1/1000"}, {text:"1/500"}];
         $scope.shutters = shutters;
-});
+        $scope.shutterSet=shutters[0];
 
+});
