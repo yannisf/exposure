@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="exposure">
 
 <head>
     <title>Exposure</title>
@@ -15,32 +15,32 @@
     <form class="form-horizontal">
 
         <div class="span6">
-            <div class="control-group">
+            <div class="control-group" ng-controller="LoadIsos">
                 <label class="control-label" for="initialIso">ISO</label>
 
                 <div class="controls">
                     <select id="initialIso" name="initialIso">
-                        <option value="0">100</option>
+                        <option ng-repeat="iso in isos" value="{{iso.index}}">{{iso.label}}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="control-group" ng-controller="LoadApertures">
                 <label class="control-label" for="initialAperture">Aperture</label>
 
                 <div class="controls">
                     <select id="initialAperture" name="initialAperture">
-                        <option value="0">f/2.0</option>
+                        <option ng-repeat="aperture in apertures" value="{{aperture.index}}">{{aperture.label}}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="control-group" ng-controller="LoadShutters">
                 <label class="control-label" for="initialShutter">Shutter</label>
 
                 <div class="controls">
                     <select id="initialShutter" name="initialShutter">
-                        <option value="0">1/1000</option>
+                        <option ng-repeat="shutter in shutters" value="{{shutter.index}}">{{shutter.label}}</option>
                     </select>
                 </div>
             </div>
@@ -56,8 +56,11 @@
     </form>
 </div>
 
-<script src="jquery/jquery.min.js"></script>
+<script src="scripts/jquery.js"></script>
+<script src="scripts/angular.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="scripts/application.js"></script>
+
 <script type="text/javascript">
     $(function() {
     console.log('Ready')
