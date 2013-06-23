@@ -1,8 +1,9 @@
 package fragsoft.exposure.service;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ExposureValueDto {
+public class ExposureValueDto implements Serializable {
 
     private String label;
 

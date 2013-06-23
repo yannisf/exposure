@@ -19,7 +19,8 @@
                 <label class="control-label" for="initialIso">ISO</label>
 
                 <div class="controls">
-                    <select id="initialIso" ng-model="isoSet" ng-options="iso.text for iso in isos"></select>
+                    <select id="initialIso" class="span2" ng-model="isoSet"
+                            ng-options="iso.label for iso in isos"></select>
                 </div>
             </div>
 
@@ -27,8 +28,8 @@
                 <label class="control-label" for="initialAperture">Aperture</label>
 
                 <div class="controls">
-                    <select id="initialAperture" ng-model="apertureSet"
-                            ng-options="aperture.text for aperture in apertures"></select>
+                    <select id="initialAperture" class="span2" ng-model="apertureSet"
+                            ng-options="aperture.label for aperture in apertures"></select>
                 </div>
             </div>
 
@@ -36,8 +37,8 @@
                 <label class="control-label" for="initialShutter">Shutter</label>
 
                 <div class="controls">
-                    <select id="initialShutter" ng-model="shutterSet"
-                            ng-options="shutter.text for shutter in shutters"></select>
+                    <select id="initialShutter" class="span2" ng-model="shutterSet"
+                            ng-options="shutter.label for shutter in shutters"></select>
                 </div>
             </div>
 
