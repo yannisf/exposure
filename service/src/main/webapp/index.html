@@ -12,9 +12,9 @@
 <h1>Exposure</h1>
 
 <div class="row">
-    <form class="form-horizontal">
+    <form class="form-horizontal" ng-controller="InitializeController">
 
-        <div class="span6" ng-controller="InitializeController">
+        <div class="span6">
             <div class="control-group">
                 <label class="control-label" for="initialIso">ISO</label>
 
@@ -44,17 +44,54 @@
 
             <div class="control-group">
                 <div class="controls">
-                    <button type="submit" class="btn">Set</button>
+                    <button type="submit" class="btn btn-primary btn-large">Set</button>
+                </div>
+            </div>
+
+            <div>
+                [ISO:{{isoSet.label}}][A:{{apertureSet.label}}][S:{{shutterSet.label}}]
+            </div>
+        </div>
+
+        <div class="span6">
+
+            <div class="control-group">
+                <label class="control-label" for="updatedIso">ISO</label>
+
+                <div class="controls">
+                    <select id="updatedIso" class="span2" ng-model="toIso"
+                            ng-options="iso.label for iso in isos"></select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="updatedAperture">Aperture</label>
+
+                <div class="controls">
+                    <select id="updatedAperture" class="span2" ng-model="toAperture"
+                            ng-options="aperture.label for aperture in apertures"></select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="updatedShutter">Shutter</label>
+
+                <div class="controls">
+                    <select id="updatedShutter" class="span2" ng-model="toShutter"
+                            ng-options="shutter.label for shutter in shutters"></select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-success btn-large">Update</button>
                 </div>
             </div>
 
             <div>
                 ISO:{{isoSet.text}}/A:{{apertureSet.text}}/S:{{shutterSet.text}}
             </div>
-        </div>
 
-        <div class="span6">
-            TODO
         </div>
     </form>
 </div>
