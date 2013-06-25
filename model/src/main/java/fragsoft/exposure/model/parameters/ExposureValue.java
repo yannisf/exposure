@@ -37,4 +37,20 @@ public class ExposureValue {
         return "EV: " + type + "," + label + "," + getGranularity();
     }
 
+    public static enum ExposureParameterType {
+        ISO("ISO"),
+        APERTURE("A"),
+        SHUTTER("S");
+
+        private String symbol;
+
+        ExposureParameterType(String symbol) {
+            this.symbol = symbol;
+        }
+
+        public String getSymbol() {
+            return this.symbol;
+        }
+    }
+
 }

@@ -27,7 +27,7 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
         try {
             findExposureValueFromLabel(label);
         } catch (ExactMatchNotFoundException emnf) {
-            System.out.println("Exact match not found, switching to intelligent (approximate) match");
+            LOG.info("Exact match not found, switching to intelligent match");
             intelligentExposureValueFromLabel(label);
         }
     }

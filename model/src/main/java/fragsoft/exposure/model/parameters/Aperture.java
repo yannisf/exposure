@@ -2,12 +2,13 @@ package fragsoft.exposure.model.parameters;
 
 import fragsoft.exposure.model.exception.ExposureOutOfScaleException;
 import fragsoft.exposure.model.exception.NoMatchException;
+import fragsoft.exposure.model.parameters.ExposureValue.ExposureParameterType;
 
 import java.util.List;
 
 public class Aperture extends ExposureParameter {
 
-    public static final ExposureParameterType TYPE = ExposureParameterType.APERTURE;
+    public static final ExposureParameterType TYPE = ExposureValue.ExposureParameterType.APERTURE;
 
     public Aperture(int index) throws ExposureOutOfScaleException {
         super(index);

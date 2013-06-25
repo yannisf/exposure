@@ -8,40 +8,53 @@ import fragsoft.exposure.model.parameters.Shutter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ShootingConditions {
+import java.io.Serializable;
+
+public class ShootingConditions implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ShootingConditions.class);
 
     public enum Priority {
-        APERTURE, SHUTTER, MANUAL
+        APERTURE, SHUTTER
     }
 
-    private Iso isoSensitivity;
+    private Iso iso;
     private Aperture aperture;
-    private Shutter shutterSpeed;
+    private Shutter shutter;
     private Priority priority;
 
-    public ShootingConditions(String setIso, String setAperture, String setShutterSpeed) throws NoMatchException {
-        isoSensitivity = new Iso(setIso);
-        aperture = new Aperture(setAperture);
-        shutterSpeed = new Shutter(setShutterSpeed);
+    public ShootingConditions(Integer initialIsoIndex,
+                              Integer initialApertureIndex,
+                              Integer initialShutterIndex) throws ExposureOutOfScaleException {
+        iso = new Iso(initialIsoIndex);
+        aperture = new Aperture(initialApertureIndex);
+        shutter = new Shutter(initialShutterIndex);
     }
 
-    public ShootingConditions(String setIso, String setAperture, String setShutterSpeed, Priority priority) throws NoMatchException {
-        this(setIso, setAperture, setShutterSpeed);
-        this.priority = priority;
+    public ShootingConditions(String initialIsoLabel,
+                              String initialApertureLabel,
+                              String initialShutterLabel) throws NoMatchException {
+        iso = new Iso(initialIsoLabel);
+        aperture = new Aperture(initialApertureLabel);
+        shutter = new Shutter(initialShutterLabel);
     }
 
-    public Iso getIsoSensitivity() {
-        return isoSensitivity;
+    public ShootingConditions(Iso initialIso, Aperture initialAperture, Shutter initialShutter) {
+        this.iso = initialIso;
+        this.aperture = initialAperture;
+        this.shutter = initialShutter;
+    }
+
+    public Iso getIso() {
+        return iso;
     }
 
     public Aperture getAperture() {
         return aperture;
     }
 
-    public Shutter getShutterSpeed() {
-        return shutterSpeed;
+    public Shutter getShutter() {
+        return shutter;
     }
 
     public Priority getPriority() {
@@ -52,61 +65,71 @@ public class ShootingConditions {
         this.priority = priority;
     }
 
-    public void updateAperture(String setUpdatedAperture) throws NoMatchException, ExposureOutOfScaleException {
-        LOG.info("BEFORE {}", this);
-        Aperture updatedAperture = new Aperture(setUpdatedAperture);
-        Integer indexDifference = updatedAperture.getIndex() - aperture.getIndex();
-        aperture = updatedAperture;
-        shutterSpeed = shutterSpeed.displaceBy(indexDifference);
-        LOG.info("AFTER {}", this);
+    public void updateAperture(String equivalentApertureLabel) throws NoMatchException, ExposureOutOfScaleException {
+        Aperture equivalentAperture = new Aperture(equivalentApertureLabel);
+        updateAperture(equivalentAperture);
     }
 
-    public void updateShutterSpeed(String setUpdatedShutterSpeed) throws NoMatchException, ExposureOutOfScaleException {
-        LOG.info("BEFORE {}", this);
-        Shutter updatedShutterSpeed = new Shutter(setUpdatedShutterSpeed);
-        Integer indexDifference = updatedShutterSpeed.getIndex() - aperture.getIndex();
-        shutterSpeed = updatedShutterSpeed;
+    public void updateAperture(Integer equivalentApertureIndex) throws ExposureOutOfScaleException {
+        Aperture equivalentAperture = new Aperture(equivalentApertureIndex);
+        updateAperture(equivalentAperture);
+    }
+
+    public void updateAperture(Aperture equivalentAperture) throws ExposureOutOfScaleException {
+        Integer indexDifference = equivalentAperture.getIndex() - aperture.getIndex();
+        aperture = equivalentAperture;
+        shutter = shutter.displaceBy(indexDifference);
+    }
+
+    public void updateShutter(String equivalentShutterLabel) throws NoMatchException, ExposureOutOfScaleException {
+        Shutter equivalentShutter = new Shutter(equivalentShutterLabel);
+        updateShutter(equivalentShutter);
+    }
+
+    public void updateShutter(Integer equivalentShutterIndex) throws ExposureOutOfScaleException {
+        Shutter equivalentShutter = new Shutter(equivalentShutterIndex);
+        updateShutter(equivalentShutter);
+    }
+
+    public void updateShutter(Shutter equivalentShutter) throws ExposureOutOfScaleException {
+        Integer indexDifference = equivalentShutter.getIndex() - aperture.getIndex();
+        shutter = equivalentShutter;
         aperture = aperture.displaceBy(indexDifference);
-        LOG.info("AFTER {}", this);
     }
 
-    public void updateIso(String setIso) throws NoMatchException, ExposureOutOfScaleException {
-        LOG.info("BEFORE {}", this);
-        Iso updatedIso = new Iso(setIso);
-        Integer indexDifference = updatedIso.getIndex() - isoSensitivity.getIndex();
+    public void updateIso(String equivalentIsoLabel) throws NoMatchException, ExposureOutOfScaleException {
+        Iso updatedIso = new Iso(equivalentIsoLabel);
+        updateIso(updatedIso);
+    }
+
+    public void updateIso(Integer equivalentIsoIndex) throws ExposureOutOfScaleException {
+        Iso updatedIso = new Iso(equivalentIsoIndex);
+        updateIso(updatedIso);
+    }
+
+    public void updateIso(Iso equivalentIso) throws ExposureOutOfScaleException {
+        Integer indexDifference = equivalentIso.getIndex() - iso.getIndex();
         priorityControl();
         if (priority == Priority.APERTURE) {
-            shutterSpeed = shutterSpeed.displaceBy(-indexDifference);
+            shutter = shutter.displaceBy(-indexDifference);
         } else if (priority == Priority.SHUTTER) {
             aperture = aperture.displaceBy(indexDifference);
         }
-        isoSensitivity = updatedIso;
-        LOG.info("AFTER {}", this);
+        iso = equivalentIso;
     }
 
     private void priorityControl() {
         if (priority != null) {
             LOG.debug("Priority already set to {}", priority);
         } else {
-            LOG.info("Priority not set, assuming aperture");
+            LOG.debug("Priority not set, assuming aperture");
             priority = Priority.APERTURE;
         }
     }
 
-
     @Override
     public String toString() {
-        return isoSensitivity + " " + aperture + " " + shutterSpeed;
-    }
-
-    public static final void main(String[] args) throws NoMatchException, ExposureOutOfScaleException {
-        ShootingConditions conditions = new ShootingConditions("200", "f/2.8", "1");
-        conditions.setPriority(Priority.SHUTTER);
-        try {
-            conditions.updateAperture("f5.6.36");
-        } catch (NoMatchException nme) {
-            LOG.warn("Could not evaluate value");
-        }
+        return iso + " " + aperture + " " + shutter;
     }
 
 }
