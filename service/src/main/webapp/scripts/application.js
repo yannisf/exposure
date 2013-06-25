@@ -39,6 +39,40 @@ exposureModule.factory('Shutter', function($http) {
 exposureModule.controller('InitializeController',
 
     function($scope, Iso, Aperture, Shutter) {
+        $scope.initial = {};
+        $scope.equivalent = {};
+
+        $scope.lock = function() {
+            $scope.initial.set = false;
+            $scope.initial.reset = true;
+            $scope.initial.iso = true;
+            $scope.initial.aperture = true;
+            $scope.initial.shutter = true;
+            $scope.toIso = $scope.isoSet;
+            $scope.toAperture = $scope.apertureSet;
+            $scope.toShutter = $scope.shutterSet;
+            $scope.equivalent.iso = false;
+            $scope.equivalent.aperture = false;
+            $scope.equivalent.shutter = false;
+
+        }
+
+        $scope.unlock = function() {
+            $scope.initial.set = true;
+            $scope.initial.reset = false;
+            $scope.initial.iso = false;
+            $scope.initial.aperture = false;
+            $scope.initial.shutter = false;
+            $scope.toIso = null;
+            $scope.toAperture = null;
+            $scope.toShutter = null;
+            $scope.equivalent.iso = true;
+            $scope.equivalent.aperture = true;
+            $scope.equivalent.shutter = true;
+        }
+
+        $scope.unlock();
+
         Iso.query().then(function(data) {
             $scope.isos = data;
             $scope.isoSet = $scope.isos[0];
