@@ -8,94 +8,107 @@
 </head>
 
 <body>
+<div class="container">
+    <h1>Exposure</h1>
 
-<h1>Exposure</h1>
-
-<div class="row">
     <form class="form-horizontal" ng-controller="InitializeController">
 
-        <div class="span6">
-            <div class="control-group">
-                <label class="control-label" for="initialIso">ISO</label>
-
-                <div class="controls">
-                    <select id="initialIso" class="span2" ng-model="isoSet"
-                            ng-options="iso.label for iso in isos"></select>
-                </div>
+        <div class="row">
+            <div class="span6">
+                <h2>Initial</h2>
             </div>
-
-            <div class="control-group">
-                <label class="control-label" for="initialAperture">Aperture</label>
-
-                <div class="controls">
-                    <select id="initialAperture" class="span2" ng-model="apertureSet"
-                            ng-options="aperture.label for aperture in apertures"></select>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label" for="initialShutter">Shutter</label>
-
-                <div class="controls">
-                    <select id="initialShutter" class="span2" ng-model="shutterSet"
-                            ng-options="shutter.label for shutter in shutters"></select>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn btn-primary btn-large">Set</button>
-                </div>
-            </div>
-
-            <div>
-                [ISO:{{isoSet.label}}][A:{{apertureSet.label}}][S:{{shutterSet.label}}]
+            <div class="span6">
+                <h2>Equivalent</h2>
             </div>
         </div>
 
-        <div class="span6">
+        <div class="row">
+            <div class="span6">
+                <div class="control-group">
+                    <label class="control-label" for="initialIso">ISO</label>
 
-            <div class="control-group">
-                <label class="control-label" for="updatedIso">ISO</label>
+                    <div class="controls">
+                        <select id="initialIso" class="span2" ng-model="isoSet" ng-disabled="initial.iso"
+                                ng-options="iso.label for iso in isos"></select>
+                    </div>
+                </div>
 
-                <div class="controls">
-                    <select id="updatedIso" class="span2" ng-model="toIso"
-                            ng-options="iso.label for iso in isos"></select>
+                <div class="control-group">
+                    <label class="control-label" for="initialAperture">Aperture</label>
+
+                    <div class="controls">
+                        <select id="initialAperture" class="span2" ng-model="apertureSet" ng-disabled="initial.aperture"
+                                ng-options="aperture.label for aperture in apertures"></select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="initialShutter">Shutter</label>
+
+                    <div class="controls">
+                        <select id="initialShutter" class="span2" ng-model="shutterSet" ng-disabled="initial.shutter"
+                                ng-options="shutter.label for shutter in shutters"></select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-success btn-large" ng-show="initial.set" ng-click="lock()">Lock</button>
+                        <button class="btn btn-danger btn-large" ng-show="initial.reset" ng-click="unlock()">Unlock
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    [ISO:{{isoSet.label}}][A:{{apertureSet.label}}][S:{{shutterSet.label}}]
                 </div>
             </div>
 
-            <div class="control-group">
-                <label class="control-label" for="updatedAperture">Aperture</label>
+            <div class="span6">
 
-                <div class="controls">
-                    <select id="updatedAperture" class="span2" ng-model="toAperture"
-                            ng-options="aperture.label for aperture in apertures"></select>
+                <div class="control-group">
+                    <label class="control-label" for="updatedIso">ISO</label>
+
+                    <div class="controls">
+                        <select id="updatedIso" class="span2" ng-model="toIso" ng-disabled="equivalent.iso"
+                                ng-options="iso.label for iso in isos"></select>
+                    </div>
                 </div>
-            </div>
 
-            <div class="control-group">
-                <label class="control-label" for="updatedShutter">Shutter</label>
+                <div class="control-group">
+                    <label class="control-label" for="updatedAperture">Aperture</label>
 
-                <div class="controls">
-                    <select id="updatedShutter" class="span2" ng-model="toShutter"
-                            ng-options="shutter.label for shutter in shutters"></select>
+                    <div class="controls">
+                        <select id="updatedAperture" class="span2" ng-model="toAperture"
+                                ng-disabled="equivalent.aperture"
+                                ng-options="aperture.label for aperture in apertures"></select>
+                    </div>
                 </div>
-            </div>
 
-            <div class="control-group">
-                <div class="controls">
-                    <button type="submit" class="btn btn-success btn-large">Update</button>
+                <div class="control-group">
+                    <label class="control-label" for="updatedShutter">Shutter</label>
+
+                    <div class="controls">
+                        <select id="updatedShutter" class="span2" ng-model="toShutter" ng-disabled="equivalent.shutter"
+                                ng-options="shutter.label for shutter in shutters"></select>
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                ISO:{{isoSet.text}}/A:{{apertureSet.text}}/S:{{shutterSet.text}}
-            </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary btn-large">Update</button>
+                        <button class="btn btn-primary btn-large">Reset</button>
+                    </div>
+                </div>
 
+                <div>
+                    ISO:{{isoSet.text}}/A:{{apertureSet.text}}/S:{{shutterSet.text}}
+                </div>
+
+            </div>
         </div>
     </form>
 </div>
-
 <script src="scripts/jquery.js"></script>
 <script src="scripts/angular.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>

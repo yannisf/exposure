@@ -68,7 +68,7 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
                     this.index = getValues().indexOf(value);
                 }
             }
-            LOG.debug("Approximation: {}[{}] => {}[{}]", new String[]{getSymbol(), label, getSymbol(), getValue().getValue().toString()});
+            LOG.debug("Approximation: {}[{}] => {}[{}]", new Object[]{getSymbol(), label, getSymbol(), getValue().getValue().toString()});
         } catch (NumberFormatException | NullPointerException ex) {
             throw new NoMatchException(ex);
         }
