@@ -27,7 +27,7 @@ public class ShutterResource {
         List<ExposureValueDto> shutters = new ArrayList<>();
         List<ExposureValue> shutterValues = ValuesStore.getShutterValues();
         for (ExposureValue ev : shutterValues) {
-            shutters.add(new ExposureValueDto(ev.getLabel(), ev.getValue()));
+            shutters.add(new ExposureValueDto(ev.getLabel(), ev.getValue(), shutterValues.indexOf(ev)));
         }
 
         return shutters;
@@ -36,22 +36,22 @@ public class ShutterResource {
     @GET
     @Produces("application/json")
     @Path(value = "/{index}")
-    public ExposureValueDto getAperture(@PathParam("index") Integer index) {
+    public ExposureValueDto getShutter(@PathParam("index") Integer index) {
         log.debug("GET Request (shutter index [{}])", index);
         ExposureValue shutter = ValuesStore.getShutterValues().get(index);
 
-        return new ExposureValueDto(shutter.getLabel(), shutter.getValue());
+        return new ExposureValueDto(shutter.getLabel(), shutter.getValue(), index);
     }
 
     @GET
     @Produces("application/json")
     @Path(value = "match/{value}")
-    public ExposureValueDto getAperture(@PathParam("value") String value) throws NoMatchException {
+    public ExposureValueDto getShutter(@PathParam("value") String value) throws NoMatchException {
         log.debug("GET Request (Shutter match [{}])", value);
         Shutter matchShutter = new Shutter(value);
         ExposureValue shutter = matchShutter.getValue();
 
-        return new ExposureValueDto(shutter.getLabel(), shutter.getValue());
+        return new ExposureValueDto(shutter.getLabel(), shutter.getValue(), matchShutter.getIndex());
     }
 
 }

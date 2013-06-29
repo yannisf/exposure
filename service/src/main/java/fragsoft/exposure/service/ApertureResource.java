@@ -27,7 +27,7 @@ public class ApertureResource {
         List<ExposureValueDto> apertures = new ArrayList<>();
         List<ExposureValue> apertureValues = ValuesStore.getApertureValues();
         for (ExposureValue ev : apertureValues) {
-            apertures.add(new ExposureValueDto(ev.getLabel(), ev.getValue()));
+            apertures.add(new ExposureValueDto(ev.getLabel(), ev.getValue(), apertureValues.indexOf(ev)));
         }
 
         return apertures;
@@ -40,7 +40,7 @@ public class ApertureResource {
         log.debug("GET Request (aperture index [{}])", index);
         ExposureValue aperture = ValuesStore.getApertureValues().get(index);
 
-        return new ExposureValueDto(aperture.getLabel(), aperture.getValue());
+        return new ExposureValueDto(aperture.getLabel(), aperture.getValue(), index);
     }
 
     @GET
@@ -51,7 +51,7 @@ public class ApertureResource {
         Aperture matchAperture = new Aperture(value);
         ExposureValue aperture = matchAperture.getValue();
 
-        return new ExposureValueDto(aperture.getLabel(), aperture.getValue());
+        return new ExposureValueDto(aperture.getLabel(), aperture.getValue(), matchAperture.getIndex());
     }
 
 }

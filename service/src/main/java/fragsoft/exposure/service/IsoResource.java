@@ -21,13 +21,13 @@ public class IsoResource {
 
     @GET
     @Produces("application/json")
-    public List<ExposureValueDto> getShutterList() {
+    public List<ExposureValueDto> getIsoList() {
         log.debug("GET Request (ISO list)");
 
         List<ExposureValueDto> isos = new ArrayList<>();
         List<ExposureValue> isoValues = ValuesStore.getIsoValues();
         for (ExposureValue ev : isoValues) {
-            isos.add(new ExposureValueDto(ev.getLabel(), ev.getValue()));
+            isos.add(new ExposureValueDto(ev.getLabel(), ev.getValue(), isoValues.indexOf(ev)));
         }
 
         return isos;
@@ -36,22 +36,22 @@ public class IsoResource {
     @GET
     @Produces("application/json")
     @Path(value = "/{index}")
-    public ExposureValueDto getAperture(@PathParam("index") Integer index) {
+    public ExposureValueDto getIso(@PathParam("index") Integer index) {
         log.debug("GET Request (ISO index [{}])", index);
         ExposureValue iso = ValuesStore.getIsoValues().get(index);
 
-        return new ExposureValueDto(iso.getLabel(), iso.getValue());
+        return new ExposureValueDto(iso.getLabel(), iso.getValue(), index);
     }
 
     @GET
     @Produces("application/json")
     @Path(value = "match/{value}")
-    public ExposureValueDto getAperture(@PathParam("value") String value) throws NoMatchException {
+    public ExposureValueDto getIso(@PathParam("value") String value) throws NoMatchException {
         log.debug("GET Request (ISO match [{}])", value);
         Iso matchIso = new Iso(value);
         ExposureValue iso = matchIso.getValue();
 
-        return new ExposureValueDto(iso.getLabel(), iso.getValue());
+        return new ExposureValueDto(iso.getLabel(), iso.getValue(), matchIso.getIndex());
     }
 
 }

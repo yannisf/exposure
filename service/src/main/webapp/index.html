@@ -71,7 +71,10 @@
 
                     <div class="controls">
                         <select id="updatedIso" class="span2" ng-model="toIso" ng-disabled="equivalent.iso"
-                                ng-options="iso.label for iso in isos"></select>
+                                ng-options="iso.label for iso in isos"
+                                ng-change="updateIso()">
+                        </select>
+                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
                     </div>
                 </div>
 
@@ -81,7 +84,10 @@
                     <div class="controls">
                         <select id="updatedAperture" class="span2" ng-model="toAperture"
                                 ng-disabled="equivalent.aperture"
-                                ng-options="aperture.label for aperture in apertures"></select>
+                                ng-options="aperture.label for aperture in apertures"
+                                ng-change="updateAperture()">
+                        </select>
+                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
                     </div>
                 </div>
 
@@ -90,21 +96,21 @@
 
                     <div class="controls">
                         <select id="updatedShutter" class="span2" ng-model="toShutter" ng-disabled="equivalent.shutter"
-                                ng-options="shutter.label for shutter in shutters"></select>
+                                ng-options="shutter.label for shutter in shutters"
+                                ng-change="updateShutter()">
+                        </select>
+                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
                     </div>
                 </div>
 
                 <div class="control-group">
                     <div class="controls">
-                        <button class="btn btn-primary btn-large">Update</button>
-                        <button class="btn btn-primary btn-large">Reset</button>
+                        <button class="btn btn-primary btn-large"
+                                ng-show="equivalent.reset.show"
+                                ng-click="equivalent.reset.perform()">Reset
+                        </button>
                     </div>
                 </div>
-
-                <div>
-                    ISO:{{isoSet.text}}/A:{{apertureSet.text}}/S:{{shutterSet.text}}
-                </div>
-
             </div>
         </div>
     </form>
