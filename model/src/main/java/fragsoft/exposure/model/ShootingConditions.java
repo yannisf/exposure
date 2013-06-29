@@ -76,9 +76,11 @@ public class ShootingConditions implements Serializable {
     }
 
     public void updateAperture(Aperture equivalentAperture) throws ExposureOutOfScaleException {
+        LOG.debug("Initial exposure: [{}]", this.toString());
         Integer indexDifference = equivalentAperture.getIndex() - aperture.getIndex();
         aperture = equivalentAperture;
         shutter = shutter.displaceBy(indexDifference);
+        LOG.debug("Equivalent exposure: [{}]", this.toString());
     }
 
     public void updateShutter(String equivalentShutterLabel) throws NoMatchException, ExposureOutOfScaleException {
@@ -92,9 +94,11 @@ public class ShootingConditions implements Serializable {
     }
 
     public void updateShutter(Shutter equivalentShutter) throws ExposureOutOfScaleException {
+        LOG.debug("Initial exposure: [{}]", this.toString());
         Integer indexDifference = equivalentShutter.getIndex() - aperture.getIndex();
         shutter = equivalentShutter;
         aperture = aperture.displaceBy(indexDifference);
+        LOG.debug("Equivalent exposure: [{}]", this.toString());
     }
 
     public void updateIso(String equivalentIsoLabel) throws NoMatchException, ExposureOutOfScaleException {
@@ -108,6 +112,7 @@ public class ShootingConditions implements Serializable {
     }
 
     public void updateIso(Iso equivalentIso) throws ExposureOutOfScaleException {
+        LOG.debug("Initial exposure: [{}]", this.toString());
         Integer indexDifference = equivalentIso.getIndex() - iso.getIndex();
         priorityControl();
         if (priority == Priority.APERTURE) {
@@ -116,6 +121,7 @@ public class ShootingConditions implements Serializable {
             aperture = aperture.displaceBy(indexDifference);
         }
         iso = equivalentIso;
+        LOG.debug("Equivalent exposure: [{}]", this.toString());
     }
 
     private void priorityControl() {

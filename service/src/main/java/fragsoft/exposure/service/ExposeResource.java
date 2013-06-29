@@ -35,7 +35,7 @@ public class ExposeResource {
         Integer outcome = 0;
         if (toIsoMode) {
             conditions.updateIso(toIsoIndex);
-            outcome = conditions.getAperture().getIndex();
+            outcome = conditions.getShutter().getIndex();
         } else if (toApertureMode) {
             conditions.updateAperture(toApertureIndex);
             outcome = conditions.getShutter().getIndex();
