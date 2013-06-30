@@ -21,7 +21,7 @@ public class ExposeResource {
             @PathParam("shutterIndex") Integer shutterIndex,
             @QueryParam("toIso") Integer toIsoIndex,
             @QueryParam("toAperture") Integer toApertureIndex,
-            @QueryParam("toSehutter") Integer toShutterIndex) throws ExposureOutOfScaleException {
+            @QueryParam("toShutter") Integer toShutterIndex) throws ExposureOutOfScaleException {
         log.debug("GET Request (Equivalent exposure for indexed [{}:{}:{}])",
                 new Object[]{isoIndex, apertureIndex, shutterIndex});
 
@@ -32,7 +32,7 @@ public class ExposeResource {
         boolean toApertureMode = toApertureIndex != null;
         boolean toShutterMode = toShutterIndex != null;
 
-        Integer outcome = 0;
+        Integer outcome = -1;
         if (toIsoMode) {
             conditions.updateIso(toIsoIndex);
             outcome = conditions.getShutter().getIndex();
