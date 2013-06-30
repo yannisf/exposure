@@ -95,7 +95,7 @@ public class ShootingConditions implements Serializable {
 
     public void updateShutter(Shutter equivalentShutter) throws ExposureOutOfScaleException {
         LOG.debug("Initial exposure: [{}]", this.toString());
-        Integer indexDifference = equivalentShutter.getIndex() - aperture.getIndex();
+        Integer indexDifference = equivalentShutter.getIndex() - shutter.getIndex();
         shutter = equivalentShutter;
         aperture = aperture.displaceBy(indexDifference);
         LOG.debug("Equivalent exposure: [{}]", this.toString());
