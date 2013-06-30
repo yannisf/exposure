@@ -58,23 +58,31 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
         LOG.info("Approximating {}[{}]", getSymbol(), sanitized);
         try {
             BigDecimal convertedValue = new BigDecimal(sanitized);
-            BigDecimal minimumValueDifference = null;
-
-            for (ExposureValue value : getValues()) {
-                BigDecimal valueDifference = convertedValue.subtract(value.getValue());
-                if (minimumValueDifference == null || minimumValueDifference.compareTo(valueDifference.abs()) > 0) {
-                    LOG.debug("Setting new minimum value difference to {}", valueDifference);
-                    minimumValueDifference = valueDifference;
-                    this.index = getValues().indexOf(value);
-                }
-            }
+            ExposureValue optimal = findOptimalMatch(convertedValue);
+            this.index = getValues().indexOf(optimal);
             LOG.debug("Approximation: {}[{}] => {}[{}]", new Object[]{getSymbol(), label, getSymbol(), getValue().getValue().toString()});
         } catch (NumberFormatException | NullPointerException ex) {
             throw new NoMatchException(ex);
         }
     }
 
-    private String dropNonNumericChars(String label) {
+    ExposureValue findOptimalMatch(BigDecimal convertedValue) {
+        ExposureValue optimal = null;
+        BigDecimal minimumValueDifference = null;
+
+        for (ExposureValue value : getValues()) {
+            BigDecimal valueDifference = convertedValue.subtract(value.getValue());
+            if (minimumValueDifference == null || minimumValueDifference.compareTo(valueDifference.abs()) > 0) {
+                LOG.debug("Setting new minimum value difference to {}", valueDifference);
+                minimumValueDifference = valueDifference;
+                optimal = value;
+            }
+        }
+
+        return optimal;
+    }
+
+    String dropNonNumericChars(String label) {
         String sanitized = label.replaceAll("[^\\d.]", "");
         if (!label.equals(sanitized)) {
             LOG.info("Dropped non-numeric characters: {} => {}", label, sanitized);

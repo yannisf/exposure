@@ -3,17 +3,12 @@ package fragsoft.exposure.model.parameters;
 import fragsoft.exposure.model.parameters.ExposureValue.ExposureParameterType;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ValuesStore {
 
     public enum ValuesGranularity {
-        FULL,
-        THIRD
+        FULL, THIRD
     }
 
     private static final Map<ExposureParameterType, List<ExposureValue>> VALUES = new HashMap<>();
