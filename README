@@ -1,2 +1,3 @@
 A web application with several modules to help photographers get a proper exposure.
-A RESTful API is provided to support the business logic.
+
+The application offers as well a RESTful API for various photographic calculation.
