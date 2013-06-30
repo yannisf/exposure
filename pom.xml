@@ -6,6 +6,22 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>Perfect exposure parent module</name>
+
+    <description>
+        A web application with several modules to help photographers get a proper exposure.
+    </description>
+
+    <inceptionYear>2013</inceptionYear>
+
+    <url>http://perfect-exposure.herokuapp.com</url>
+
+    <scm>
+        <url>https://github.com/yannisf/exposure</url>
+        <connection>scm:git:https://github.com/yannisf/exposure.git</connection>
+        <developerConnection>scm:git:https://github.com/yannisf/exposure.git</developerConnection>
+    </scm>
+
     <modules>
         <module>model</module>
         <module>service</module>

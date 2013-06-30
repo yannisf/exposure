@@ -11,6 +11,8 @@
     <artifactId>model</artifactId>
     <packaging>jar</packaging>
 
+    <name>Perfect exposure business model</name>
+
     <build>
         <finalName>exposure-model</finalName>
     </build>
