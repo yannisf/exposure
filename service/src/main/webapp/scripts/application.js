@@ -39,6 +39,7 @@ exposureModule.factory('Shutter', function($http) {
 exposureModule.factory('Equivalent', function($http) {
     var exposure = {};
     exposure.iso = function($scope) {
+        var initialIndex = $scope.isoSet.index + "/" + $scope.apertureSet.index + "/" + $scope.shutterSet.index + "/";
         var resource = $scope.isoSet.index + "/" + $scope.apertureSet.index + "/" + $scope.shutterSet.index + "/";
         return $http.get("api/expose/" + initialIndex + "?toIso=" + $scope.toIso.index).then(function (response) {
                 return response.data;
@@ -69,7 +70,24 @@ exposureModule.factory('Equivalent', function($http) {
 exposureModule.controller('InitializeController',
 
     function($scope, Iso, Aperture, Shutter, Equivalent) {
-        $scope.initial = {};
+
+        $scope.initial = {
+            "_iso": {
+                "loader": {
+                    "show": true
+                }
+            },
+            "_aperture": {
+                "loader": {
+                    "show": true
+                }
+            },
+            "_shutter": {
+                "loader": {
+                    show: true
+                }
+            }
+        };
 
         $scope.equivalent = {
             loader: {
@@ -77,7 +95,6 @@ exposureModule.controller('InitializeController',
             },
             reset: {
                 perform: function() {
-                    console.log('Performing reset');
                     copyInitialExposure();
                     enableEquivalentExposure();
                     this.show = false;
@@ -102,7 +119,8 @@ exposureModule.controller('InitializeController',
         }
 
         $scope.lock = function() {
-            $scope.initial.set = false;
+            $scope.initial.lock = false;
+            $scope.initial.unlock = true;
             $scope.initial.iso = true;
             $scope.initial.aperture = true;
             $scope.initial.shutter = true;
@@ -115,7 +133,8 @@ exposureModule.controller('InitializeController',
         }
 
         $scope.unlock = function() {
-            $scope.initial.set = true;
+            $scope.initial.lock = true;
+            $scope.initial.unlock = false;
             $scope.initial.iso = false;
             $scope.initial.aperture = false;
             $scope.initial.shutter = false;
@@ -139,55 +158,52 @@ exposureModule.controller('InitializeController',
         Iso.query().then(function(data) {
             $scope.isos = data;
             $scope.isoSet = $scope.isos[9];
+            $scope.initial._iso.loader.show = false;
         });
 
         Aperture.query().then(function(data) {
             $scope.apertures = data;
             $scope.apertureSet = $scope.apertures[9];
+            $scope.initial._aperture.loader.show = false;
         });
 
         Shutter.query().then(function(data) {
             $scope.shutters = data;
             $scope.shutterSet = $scope.shutters[19];
+            $scope.initial._shutter.loader.show = false;
         });
 
         $scope.updateIso = function() {
-            console.log('Updating ISO');
             equivalentControlsDisable(true);
             $scope.equivalent.loader.show = true;
             $scope.equivalent.reset.show = true;
 
             Equivalent.iso($scope).then(function(data) {
                 var index = Number(data);
-                console.log('Index: ', index)
                 $scope.toShutter = $scope.shutters[index];
                 $scope.equivalent.loader.show = false;
             });
         }
 
         $scope.updateAperture = function() {
-            console.log('Updating aperture');
             equivalentControlsDisable(true);
             $scope.equivalent.loader.show = true;
             $scope.equivalent.reset.show = true;
 
             Equivalent.aperture($scope).then(function(data) {
                 var index = Number(data);
-                console.log('Index: ', index)
                 $scope.toShutter = $scope.shutters[index];
                 $scope.equivalent.loader.show = false;
             });
         }
 
         $scope.updateShutter = function() {
-            console.log('Updating shutter');
             equivalentControlsDisable(true);
             $scope.equivalent.loader.show = true;
             $scope.equivalent.reset.show = true;
 
             Equivalent.shutter($scope).then(function(data) {
                 var index = Number(data);
-                console.log('Index: ', index)
                 $scope.toAperture = $scope.apertures[index];
                 $scope.equivalent.loader.show = false;
             });
