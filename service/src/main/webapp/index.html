@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="exposure">
+<html ng-app="perfect-exposure">
 
 <head>
     <title>Perfect exposure</title>
@@ -8,110 +8,128 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <h1>Perfect exposure</h1>
+<div class="container-fluid">
+    <h1>Perfect exposure</h1>
 
-        <form class="form-horizontal" ng-controller="InitializeController">
+    <form class="form-horizontal" ng-controller="EquivalentExposureController">
 
-            <div class="row">
-                <div class="span6">
-                    <h2>Initial</h2>
-                    <div class="control-group">
-                        <label class="control-label" for="initialIso">ISO</label>
+        <div class="row">
+            <div class="span6">
+                <h2>Initial</h2>
 
-                        <div class="controls">
-                            <select id="initialIso" class="input-small" ng-model="isoSet" ng-disabled="initial.iso"
-                                    ng-options="iso.label for iso in isos">
-                            </select>
-                            <img src="images/loader.gif" ng-show="initial._iso.loader.show"/>
-                        </div>
-                    </div>
+                <div class="control-group">
+                    <label class="control-label" for="initialIso">ISO</label>
 
-                    <div class="control-group">
-                        <label class="control-label" for="initialAperture">Aperture</label>
-
-                        <div class="controls">
-                            <select id="initialAperture" class="input-small" ng-model="apertureSet" ng-disabled="initial.aperture"
-                                    ng-options="aperture.label for aperture in apertures">
-                            </select>
-                            <img src="images/loader.gif" ng-show="initial._aperture.loader.show"/>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <label class="control-label" for="initialShutter">Shutter</label>
-
-                        <div class="controls">
-                            <select id="initialShutter" class="input-small" ng-model="shutterSet" ng-disabled="initial.shutter"
-                                    ng-options="shutter.label for shutter in shutters">
-                            </select>
-                            <img src="images/loader.gif" ng-show="initial._shutter.loader.show"/>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <div class="controls">
-                            <button class="btn btn-success btn-large" ng-show="initial.lock" ng-click="lock()">Lock</button>
-                            <button class="btn btn-danger btn-large" ng-show="initial.unlock" ng-click="unlock()">Unlock
-                            </button>
-                        </div>
+                    <div class="controls">
+                        <select id="initialIso" class="input-small"
+                                ng-model="initial.iso.value"
+                                ng-disabled="initial.iso.disabled"
+                                ng-options="iso.label for iso in isos">
+                        </select>
+                        <img src="images/loader.gif" ng-show="initial.iso.loader.show"/>
                     </div>
                 </div>
 
-                <div class="span6">
-                    <h2>Equivalent</h2>
-                    <div class="control-group">
-                        <label class="control-label" for="updatedIso">ISO</label>
+                <div class="control-group">
+                    <label class="control-label" for="initialAperture">Aperture</label>
 
-                        <div class="controls">
-                            <select id="updatedIso" class="input-small" ng-model="toIso" ng-disabled="equivalent.iso"
-                                    ng-options="iso.label for iso in isos"
-                                    ng-change="updateIso()">
-                            </select>
-                            <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
-                        </div>
+                    <div class="controls">
+                        <select id="initialAperture" class="input-small"
+                                ng-model="initial.aperture.value"
+                                ng-disabled="initial.aperture.disabled"
+                                ng-options="aperture.label for aperture in apertures">
+                        </select>
+                        <img src="images/loader.gif" ng-show="initial.aperture.loader.show"/>
                     </div>
+                </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="updatedAperture">Aperture</label>
+                <div class="control-group">
+                    <label class="control-label" for="initialShutter">Shutter</label>
 
-                        <div class="controls">
-                            <select id="updatedAperture" class="input-small" ng-model="toAperture"
-                                    ng-disabled="equivalent.aperture"
-                                    ng-options="aperture.label for aperture in apertures"
-                                    ng-change="updateAperture()">
-                            </select>
-                            <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
-                        </div>
+                    <div class="controls">
+                        <select id="initialShutter" class="input-small"
+                                ng-model="initial.shutter.value"
+                                ng-disabled="initial.shutter.disabled"
+                                ng-options="shutter.label for shutter in shutters">
+                        </select>
+                        <img src="images/loader.gif" ng-show="initial.shutter.loader.show"/>
                     </div>
+                </div>
 
-                    <div class="control-group">
-                        <label class="control-label" for="updatedShutter">Shutter</label>
-
-                        <div class="controls">
-                            <select id="updatedShutter" class="input-small" ng-model="toShutter" ng-disabled="equivalent.shutter"
-                                    ng-options="shutter.label for shutter in shutters"
-                                    ng-change="updateShutter()">
-                            </select>
-                            <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
-                        </div>
-                    </div>
-
-                    <div class="control-group">
-                        <div class="controls">
-                            <button class="btn btn-primary btn-large"
-                                    ng-show="equivalent.reset.show"
-                                    ng-click="equivalent.reset.perform()">Reset
-                            </button>
-                        </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-success btn-large"
+                                ng-show="initial.lock.show"
+                                ng-click="initial.lock.perform()">Lock
+                        </button>
+                        <button class="btn btn-danger btn-large"
+                                ng-show="initial.unlock.show"
+                                ng-click="initial.unlock.perform()">Unlock
+                        </button>
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script src="scripts/application.js"></script>
+
+            <div class="span6">
+                <h2>Equivalent</h2>
+
+                <div class="control-group">
+                    <label class="control-label" for="updatedIso">ISO</label>
+
+                    <div class="controls">
+                        <select id="updatedIso" class="input-small"
+                                ng-model="equivalent.iso.value"
+                                ng-disabled="equivalent.iso.disabled"
+                                ng-options="iso.label for iso in isos"
+                                ng-change="updateIso()">
+                        </select>
+                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="updatedAperture">Aperture</label>
+
+                    <div class="controls">
+                        <select id="updatedAperture" class="input-small"
+                                ng-model="equivalent.aperture.value"
+                                ng-disabled="equivalent.aperture.disabled"
+                                ng-options="aperture.label for aperture in apertures"
+                                ng-change="updateAperture()">
+                        </select>
+                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label" for="updatedShutter">Shutter</label>
+
+                    <div class="controls">
+                        <select id="updatedShutter" class="input-small"
+                                ng-model="equivalent.shutter.value"
+                                ng-disabled="equivalent.shutter.disabled"
+                                ng-options="shutter.label for shutter in shutters"
+                                ng-change="updateShutter()">
+                        </select>
+                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-primary btn-large"
+                                ng-show="equivalent.reset.show"
+                                ng-click="equivalent.reset.perform()">Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="scripts/application.js"></script>
 </body>
 </html>
