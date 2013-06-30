@@ -1,1 +1,1 @@
-web: java -jar target/dependency/webapp-runner.jar service/target/exposure-service.war
+web:	java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT service/target/*.war
