@@ -1,5 +1,21 @@
 var exposureModule = angular.module('perfect-exposure', []);
 
+exposureModule.config(function($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'welcome.html'})
+        .when('/equivalent', {
+            controller: 'EquivalentExposureController',
+            templateUrl: 'equivalent.html'})
+        .when('/filter', {
+            controller: 'EquivalentExposureController',
+            templateUrl: 'filter.html'})
+        .otherwise({
+            redirectTo: '/'
+        });
+    }
+);
+
 exposureModule.factory('Fetch', function($http) {
     return {
         iso: function() {
@@ -46,11 +62,38 @@ exposureModule.factory('Equivalent', function($http) {
     };
 });
 
+exposureModule.controller('NavController',
+    function($scope) {
+        $scope.nav = {
+            welcome: {
+                active: true,
+                activate: function() {
+                    $scope.nav.welcome.active = true;
+                    $scope.nav.equivalent.active = false;
+                    $scope.nav.filter.active = false;
+                }
+            },
+            equivalent: {
+                active: false,
+                activate: function() {
+                    $scope.nav.welcome.active = false;
+                    $scope.nav.equivalent.active = true;
+                    $scope.nav.filter.active = false;
+                }
+            },
+            filter: {
+                active: false,
+                activate: function() {
+                    $scope.nav.welcome.active = false;
+                    $scope.nav.equivalent.active = false;
+                    $scope.nav.filter.active = true;
+                }
+            }
+        }
+});
 
 exposureModule.controller('EquivalentExposureController',
-
     function($scope, Fetch, Equivalent) {
-
         $scope.initial = {
             iso: {
                 disabled: false,

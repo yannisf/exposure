@@ -8,125 +8,25 @@
 </head>
 
 <body>
+
 <div class="container-fluid">
     <h1>Perfect exposure</h1>
 
-    <form class="form-horizontal" ng-controller="EquivalentExposureController">
+    <ul class="nav nav-pills" ng-controller="NavController">
+        <li ng-class="{active: nav.welcome.active}">
+            <a href="#/" ng-click="nav.welcome.activate()">Welcome</a>
+        </li>
+        <li ng-class="{active: nav.equivalent.active}">
+            <a href="#/equivalent" ng-click="nav.equivalent.activate()">Equivalent</a>
+        </li>
+        <li ng-class="{active: nav.filter.active}">
+            <a href="#/filter" ng-click="nav.filter.activate()">Filter</a>
+        </li>
+    </ul>
 
-        <div class="row">
-            <div class="span6">
-                <h2>Initial</h2>
-
-                <div class="control-group">
-                    <label class="control-label" for="initialIso">ISO</label>
-
-                    <div class="controls">
-                        <select id="initialIso" class="input-small"
-                                ng-model="initial.iso.value"
-                                ng-disabled="initial.iso.disabled"
-                                ng-options="iso.label for iso in isos">
-                        </select>
-                        <img src="images/loader.gif" ng-show="initial.iso.loader.show"/>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="initialAperture">Aperture</label>
-
-                    <div class="controls">
-                        <select id="initialAperture" class="input-small"
-                                ng-model="initial.aperture.value"
-                                ng-disabled="initial.aperture.disabled"
-                                ng-options="aperture.label for aperture in apertures">
-                        </select>
-                        <img src="images/loader.gif" ng-show="initial.aperture.loader.show"/>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="initialShutter">Shutter</label>
-
-                    <div class="controls">
-                        <select id="initialShutter" class="input-small"
-                                ng-model="initial.shutter.value"
-                                ng-disabled="initial.shutter.disabled"
-                                ng-options="shutter.label for shutter in shutters">
-                        </select>
-                        <img src="images/loader.gif" ng-show="initial.shutter.loader.show"/>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-success btn-large"
-                                ng-show="initial.lock.show"
-                                ng-click="initial.lock.perform()">Lock
-                        </button>
-                        <button class="btn btn-danger btn-large"
-                                ng-show="initial.unlock.show"
-                                ng-click="initial.unlock.perform()">Unlock
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="span6">
-                <h2>Equivalent</h2>
-
-                <div class="control-group">
-                    <label class="control-label" for="updatedIso">ISO</label>
-
-                    <div class="controls">
-                        <select id="updatedIso" class="input-small"
-                                ng-model="equivalent.iso.value"
-                                ng-disabled="equivalent.iso.disabled"
-                                ng-options="iso.label for iso in isos"
-                                ng-change="updateIso()">
-                        </select>
-                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="updatedAperture">Aperture</label>
-
-                    <div class="controls">
-                        <select id="updatedAperture" class="input-small"
-                                ng-model="equivalent.aperture.value"
-                                ng-disabled="equivalent.aperture.disabled"
-                                ng-options="aperture.label for aperture in apertures"
-                                ng-change="updateAperture()">
-                        </select>
-                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <label class="control-label" for="updatedShutter">Shutter</label>
-
-                    <div class="controls">
-                        <select id="updatedShutter" class="input-small"
-                                ng-model="equivalent.shutter.value"
-                                ng-disabled="equivalent.shutter.disabled"
-                                ng-options="shutter.label for shutter in shutters"
-                                ng-change="updateShutter()">
-                        </select>
-                        <img src="images/loader.gif" ng-show="equivalent.loader.show"/>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn btn-primary btn-large"
-                                ng-show="equivalent.reset.show"
-                                ng-click="equivalent.reset.perform()">Reset
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+    <div ng-view></div>
 </div>
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
