@@ -10,6 +10,8 @@ public class Aperture extends ExposureParameter {
 
     public static final ExposureParameterType TYPE = ExposureValue.ExposureParameterType.APERTURE;
 
+    Aperture() { }
+
     public Aperture(int index) throws ExposureOutOfScaleException {
         super(index);
     }

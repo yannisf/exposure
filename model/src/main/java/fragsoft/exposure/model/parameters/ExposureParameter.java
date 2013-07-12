@@ -16,6 +16,8 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
 
     private Integer index;
 
+    ExposureParameter() { }
+
     public ExposureParameter(int index) throws ExposureOutOfScaleException {
         if (index < 0 || getValues().size() < index) {
             throw new ExposureOutOfScaleException();
@@ -60,7 +62,7 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
             BigDecimal convertedValue = new BigDecimal(sanitized);
             ExposureValue optimal = findOptimalMatch(convertedValue);
             this.index = getValues().indexOf(optimal);
-            LOG.debug("Approximation: {}[{}] => {}[{}]", new Object[]{getSymbol(), label, getSymbol(), getValue().getValue().toString()});
+            LOG.debug("Approximation: {}[{}] => {}[{}]", getSymbol(), label, getSymbol(), getValue().getValue());
         } catch (NumberFormatException | NullPointerException ex) {
             throw new NoMatchException(ex);
         }
@@ -82,7 +84,7 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
         return optimal;
     }
 
-    String dropNonNumericChars(String label) {
+    static String dropNonNumericChars(String label) {
         String sanitized = label.replaceAll("[^\\d.]", "");
         if (!label.equals(sanitized)) {
             LOG.info("Dropped non-numeric characters: {} => {}", label, sanitized);

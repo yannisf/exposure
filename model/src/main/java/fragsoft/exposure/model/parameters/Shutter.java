@@ -10,6 +10,8 @@ public class Shutter extends ExposureParameter {
 
     public static final ExposureParameterType TYPE = ExposureValue.ExposureParameterType.SHUTTER;
 
+    public Shutter() { }
+
     public Shutter(int index) throws ExposureOutOfScaleException {
         super(index);
     }
