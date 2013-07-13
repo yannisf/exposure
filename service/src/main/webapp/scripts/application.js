@@ -275,4 +275,74 @@ exposureModule.controller('EquivalentExposureController',
             });
         }
 
-});
+    }
+);
+
+exposureModule.controller('FilteredExposureController',
+    function($scope) {
+        $scope.initial = {
+            shuttersLoaderShow: true,
+            filtersLoaderShow: true,
+            shutter: null,
+            shutters: [{label: '1/10'}, {label: '1/100'}],
+            filter: null,
+            filters: [{label: '1/3'}, {label: '1/2'}, {label: '2/3'}, {label: '1'}, {label: '2'}],
+            initialize: function() {
+                this.shutter = $scope.initial.shutters[0];
+                this.filter = $scope.initial.filters[3];
+            },
+            updateShutter: function() {
+                this.adjust_show = true;
+                $scope.filtered.info_show = false;
+                $scope.filtered.success_show = false;
+            },
+            stackFilter: function() {
+                console.log('Stacking filter: ', $scope.initial.filter);
+                this.adjust_show = true;
+                $scope.filtered.filters.push($scope.initial.filter);
+
+            },
+            adjust_show: false,
+            adjust: function() {
+                console.log('Adjust...');
+                this.adjust_show = false;
+                $scope.filtered.info_show = true;
+                $scope.filtered.success_show = true;
+            },
+            reset: function() {
+                console.log('Resetting...');
+                this.initialize();
+                $scope.filtered.filters = [];
+                this.adjust_show = false;
+                $scope.filtered.info_show = false;
+                $scope.filtered.success_show = false;
+            }
+        };
+
+        $scope.filtered = {
+            info_show: false,
+            success_show: false,
+            table_show: function() {
+                return (this.filters.length > 0);
+            },
+            filters: [],
+            remove: function(index) {
+                console.log('Removing index', index)
+                $scope.initial.adjust_show = true;
+                $scope.filtered.info_show = false;
+                $scope.filtered.success_show = false;
+                this.filters.splice(index, 1);
+            },
+            totalStrength: function() {
+                var sum = 0;
+                for (var i = 0; i < $scope.filtered.filters.length; i++) {
+                    sum += Number(eval($scope.filtered.filters[i].label))
+                }
+                return sum.toFixed(2);
+            }
+        }
+        $scope.initial.initialize();
+        $scope.filtered.shutter = 'XYZ';
+    }
+);
+

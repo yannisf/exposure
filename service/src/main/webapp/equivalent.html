@@ -3,9 +3,9 @@
         Requested equivalent exposure is out of scale.
     </div>
     <div class="alert alert-block alert-success" ng-show="equivalent.success_show">
-        <strong>ISO</strong> <span class="label label-success">{{equivalent.iso.value.label}}</span>
-        <strong>Aperture</strong> <span class="label label-success">{{equivalent.aperture.value.label}}</span>
-        <strong>Shutter</strong> <span class="label label-success">{{equivalent.shutter.value.label}}</span>
+        ISO <span class="label label-success">{{equivalent.iso.value.label}}</span>
+        Aperture <span class="label label-success">{{equivalent.aperture.value.label}}</span>
+        Shutter <span class="label label-success">{{equivalent.shutter.value.label}}</span>
     </div>
     <div class="row">
         <div class="span6">
@@ -52,11 +52,11 @@
 
             <div class="control-group">
                 <div class="controls">
-                    <button class="btn btn-success btn-large"
+                    <button class="btn btn-success"
                             ng-show="initial.lock.show"
                             ng-click="initial.lock.perform()">Lock
                     </button>
-                    <button class="btn btn-danger btn-large"
+                    <button class="btn btn-danger"
                             ng-show="initial.unlock.show"
                             ng-click="initial.unlock.perform()">Unlock
                     </button>
@@ -111,7 +111,7 @@
 
             <div class="control-group">
                 <div class="controls">
-                    <button class="btn btn-primary btn-large"
+                    <button class="btn btn-danger"
                             ng-show="equivalent.reset.show"
                             ng-click="equivalent.reset.perform()">Reset
                     </button>

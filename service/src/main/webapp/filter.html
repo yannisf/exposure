@@ -1,7 +1,100 @@
-<div class="row">
-    <div class="span12">
-        <h2>Filter</h2>
+<form class="form-horizontal" ng-controller="FilteredExposureController">
+    <div class="row">
+        <div class="span6">
+            <h2>Initial</h2>
 
-        <p>Under development</p>
+            <div class="control-group">
+                <label class="control-label" for="initialShutter">Shutter</label>
+
+                <div class="controls">
+                    <select id="initialShutter" class="input-small"
+                            ng-change="initial.updateShutter()"
+                            ng-model="initial.shutter"
+                            ng-disabled="false"
+                            ng-options="shutter.label for shutter in initial.shutters">
+                    </select>
+                    <img src="images/loader.gif" ng-show="initial.shuttersLoaderShow"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="filter">Filter</label>
+                <div class="controls">
+                    <div class="input-append">
+                        <select id="filter" class="input-small"
+                                ng-model="initial.filter"
+                                ng-disabled="false"
+                                ng-options="filter.label for filter in initial.filters">
+                        </select>
+                        <button class="btn" type="button" ng-click="initial.stackFilter()">
+                            <i class="icon-plus-sign"></i>
+                        </button>
+                    </div>
+                    <img src="images/loader.gif" ng-show="initial.filtersLoaderShow"/>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-primary"
+                            ng-show="initial.adjust_show"
+                            ng-click="initial.adjust()">Adjust
+                    </button>
+                    <button class="btn btn-danger"
+                            ng-show="filtered.table_show()"
+                            ng-click="initial.reset()">Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="span6">
+            <h2>Filters</h2>
+            <div class="row">
+                <div class="span3">
+                    <div class="alert" ng-hide="filtered.table_show()">No stacked filters</div>
+                    <div class="alert alert-block alert-info" ng-show="filtered.info_show">
+                        Adjusted shutter is out of scale.
+                    </div>
+                    <div class="alert alert-block alert-success" ng-show="filtered.success_show">
+                        Adjusted Shutter <span class="label label-success">{{filtered.shutter}}</span>
+                    </div>
+                    <table class="table table-striped table-condensed"
+                            ng-show="filtered.table_show()">
+                        <thead>
+                            <tr>
+                                <th>Strength</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat='filter in filtered.filters'>
+                                <td>{{filter.label}}</td>
+                                <td>
+                                    <div class="text-center">
+                                        <button class="btn btn-danger btn-mini" type="button"
+                                                ng-click="filtered.remove($index)">
+                                            <i class="icon-remove-sign"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Total strength</th>
+                                <th>Total #</th>
+                            </tr>
+                            <tr>
+                                <td>{{filtered.totalStrength()}}</td>
+                                <td>{{filtered.filters.length}}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="span3"></div>
+            </div>
+
+        </div>
     </div>
-</div>
+</form>
