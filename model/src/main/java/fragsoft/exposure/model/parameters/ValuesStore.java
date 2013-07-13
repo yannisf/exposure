@@ -17,7 +17,7 @@ public class ValuesStore {
         List<ExposureValue> apertureValues = new ArrayList<>();
         apertureValues.add(new ExposureValue("f/1", new BigDecimal("1"), ExposureParameterType.APERTURE, ValuesGranularity.FULL));
         apertureValues.add(new ExposureValue("f/1.1", new BigDecimal("1.1"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
-        apertureValues.add(new ExposureValue("f/1.3", new BigDecimal("1.3"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
+        apertureValues.add(new ExposureValue("f/1.2", new BigDecimal("1.2"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
         apertureValues.add(new ExposureValue("f/1.4", new BigDecimal("1.4"), ExposureParameterType.APERTURE, ValuesGranularity.FULL));
         apertureValues.add(new ExposureValue("f/1.6", new BigDecimal("1.6"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
         apertureValues.add(new ExposureValue("f/1.8", new BigDecimal("1.8"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
@@ -26,7 +26,7 @@ public class ValuesStore {
         apertureValues.add(new ExposureValue("f/2.5", new BigDecimal("2.5"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
         apertureValues.add(new ExposureValue("f/2.8", new BigDecimal("2.8"), ExposureParameterType.APERTURE, ValuesGranularity.FULL));
         apertureValues.add(new ExposureValue("f/3.2", new BigDecimal("3.2"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
-        apertureValues.add(new ExposureValue("f/3.6", new BigDecimal("3.6"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
+        apertureValues.add(new ExposureValue("f/3.5", new BigDecimal("3.5"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
         apertureValues.add(new ExposureValue("f/4", new BigDecimal("4"), ExposureParameterType.APERTURE, ValuesGranularity.FULL));
         apertureValues.add(new ExposureValue("f/4.5", new BigDecimal("4.5"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));
         apertureValues.add(new ExposureValue("f/5", new BigDecimal("5"), ExposureParameterType.APERTURE, ValuesGranularity.THIRD));

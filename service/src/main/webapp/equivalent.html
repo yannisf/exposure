@@ -1,4 +1,12 @@
 <form class="form-horizontal" ng-controller="EquivalentExposureController">
+    <div class="alert alert-block alert-info" ng-show="equivalent.info_show">
+        Requested equivalent exposure is out of scale.
+    </div>
+    <div class="alert alert-block alert-success" ng-show="equivalent.success_show">
+        <strong>ISO</strong> <span class="label label-success">{{equivalent.iso.value.label}}</span>
+        <strong>Aperture</strong> <span class="label label-success">{{equivalent.aperture.value.label}}</span>
+        <strong>Shutter</strong> <span class="label label-success">{{equivalent.shutter.value.label}}</span>
+    </div>
     <div class="row">
         <div class="span6">
             <h2>Initial</h2>

@@ -19,17 +19,17 @@ exposureModule.config(function($routeProvider) {
 exposureModule.factory('Fetch', function($http) {
     return {
         iso: function() {
-            return $http.get("api/iso").then(function (response) {
+            return $http.get("api/iso", {cache: true}).then(function (response) {
                 return response.data;
             });
         },
         aperture: function() {
-            return $http.get("api/aperture").then(function (response) {
+            return $http.get("api/aperture", {cache: true}).then(function (response) {
                 return response.data;
             });
         },
         shutter: function() {
-            return $http.get("api/shutter").then(function (response) {
+            return $http.get("api/shutter", {cache: true}).then(function (response) {
                 return response.data;
             });
         }
@@ -144,7 +144,8 @@ exposureModule.controller('EquivalentExposureController',
                     $scope.initial.enable();
                     $scope.equivalent.reset.show = false;
                     $scope.equivalent.clear();
-                    $scope.equivalent.disable();
+                    $scope.equivalent.clear();
+                    $scope.equivalent.closeInfo();
                 }
             },
             construct: function() {
@@ -177,6 +178,7 @@ exposureModule.controller('EquivalentExposureController',
                     $scope.equivalent.reset.show = false;
                     //TODO: See if a this.loader.show construct would do
                     $scope.equivalent.loader.show = false;
+                    $scope.equivalent.closeInfo();
                 },
                 show: false
             },
@@ -204,6 +206,12 @@ exposureModule.controller('EquivalentExposureController',
                 $scope.equivalent.disable();
                 $scope.equivalent.loader.show = true;
                 $scope.equivalent.reset.show = true;
+            },
+            info_show: false,
+            success_show: false,
+            closeInfo: function() {
+                this.info_show = false;
+                this.success_show = false;
             }
         };
 
@@ -229,7 +237,13 @@ exposureModule.controller('EquivalentExposureController',
             $scope.equivalent.preUpdate();
             Equivalent.iso($scope).then(function(data) {
                 $scope.equivalent.loader.show = false;
-                $scope.equivalent.shutter.value = $scope.shutters[Number(data)];
+                var updatedIndex = Number(data);
+                if (updatedIndex == -1) {
+                    $scope.equivalent.info_show = true;
+                } else {
+                    $scope.equivalent.shutter.value = $scope.shutters[updatedIndex];
+                    $scope.equivalent.success_show = true;
+                }
             });
         }
 
@@ -237,7 +251,13 @@ exposureModule.controller('EquivalentExposureController',
             $scope.equivalent.preUpdate();
             Equivalent.aperture($scope).then(function(data) {
                 $scope.equivalent.loader.show = false;
-                $scope.equivalent.shutter.value = $scope.shutters[Number(data)];
+                var updatedIndex = Number(data);
+                if (updatedIndex == -1) {
+                    $scope.equivalent.info_show = true;
+                } else {
+                    $scope.equivalent.shutter.value = $scope.shutters[updatedIndex];
+                    $scope.equivalent.success_show = true;
+                }
             });
         }
 
@@ -245,7 +265,13 @@ exposureModule.controller('EquivalentExposureController',
             $scope.equivalent.preUpdate();
             Equivalent.shutter($scope).then(function(data) {
                 $scope.equivalent.loader.show = false;
-                $scope.equivalent.aperture.value = $scope.apertures[Number(data)];
+                var updatedIndex = Number(data);
+                if (updatedIndex == -1) {
+                    $scope.equivalent.info_show = true;
+                } else {
+                    $scope.equivalent.aperture.value = $scope.apertures[updatedIndex];
+                    $scope.equivalent.success_show = true;
+                }
             });
         }
 

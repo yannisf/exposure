@@ -21,27 +21,36 @@ public class ExposeResource {
             @PathParam("shutterIndex") Integer shutterIndex,
             @QueryParam("toIso") Integer toIsoIndex,
             @QueryParam("toAperture") Integer toApertureIndex,
-            @QueryParam("toShutter") Integer toShutterIndex) throws ExposureOutOfScaleException {
+            @QueryParam("toShutter") Integer toShutterIndex) {
         log.debug("GET Request (Equivalent exposure for indexed [{}:{}:{}])",
-                new Object[]{isoIndex, apertureIndex, shutterIndex});
+                isoIndex, apertureIndex, shutterIndex);
 
-        //TODO: This throws an exception that should be handled here
-        ShootingConditions conditions = new ShootingConditions(isoIndex, apertureIndex, shutterIndex);
+        Integer outcome = -1;
+        ShootingConditions conditions;
+        try {
+            conditions = new ShootingConditions(isoIndex, apertureIndex, shutterIndex);
+        } catch (ExposureOutOfScaleException exception) {
+            log.warn("Initial shooting conditions out of scale ", exception);
+            return -2;
+        }
 
         boolean toIsoMode = toIsoIndex != null;
         boolean toApertureMode = toApertureIndex != null;
         boolean toShutterMode = toShutterIndex != null;
 
-        Integer outcome = -1;
-        if (toIsoMode) {
-            conditions.updateIso(toIsoIndex);
-            outcome = conditions.getShutter().getIndex();
-        } else if (toApertureMode) {
-            conditions.updateAperture(toApertureIndex);
-            outcome = conditions.getShutter().getIndex();
-        } else if (toShutterMode) {
-            conditions.updateShutter(toShutterIndex);
-            outcome = conditions.getAperture().getIndex();
+        try {
+            if (toIsoMode) {
+                conditions.updateIso(toIsoIndex);
+                outcome = conditions.getShutter().getIndex();
+            } else if (toApertureMode) {
+                conditions.updateAperture(toApertureIndex);
+                outcome = conditions.getShutter().getIndex();
+            } else if (toShutterMode) {
+                conditions.updateShutter(toShutterIndex);
+                outcome = conditions.getAperture().getIndex();
+            }
+        } catch (ExposureOutOfScaleException exception) {
+            log.debug("The requested equivalent is out of scale");
         }
 
         return outcome;
