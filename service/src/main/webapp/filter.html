@@ -51,7 +51,7 @@
         <div class="span6">
             <h2>Filters</h2>
             <div class="row">
-                <div class="span3">
+                <div class="span6">
                     <div class="alert" ng-hide="filtered.table_show()">No stacked filters</div>
                     <div class="alert alert-block alert-info" ng-show="filtered.info_show">
                         Adjusted shutter is out of scale.
@@ -59,12 +59,16 @@
                     <div class="alert alert-block alert-success" ng-show="filtered.success_show">
                         Adjusted Shutter <span class="label label-success">{{filtered.shutter}}</span>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="span3">
                     <table class="table table-striped table-condensed"
                             ng-show="filtered.table_show()">
                         <thead>
                             <tr>
-                                <th>Strength</th>
-                                <th>&nbsp;</th>
+                                <th>f-stop</th>
+                                <th>Remove</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,7 +86,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Total strength</th>
+                                <th>Total f-stops</th>
                                 <th>Total #</th>
                             </tr>
                             <tr>
@@ -94,7 +98,6 @@
                 </div>
                 <div class="span3"></div>
             </div>
-
         </div>
     </div>
 </form>

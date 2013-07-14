@@ -40,7 +40,8 @@ public class ExposureValue {
     public static enum ExposureParameterType {
         ISO("ISO"),
         APERTURE("A"),
-        SHUTTER("S");
+        SHUTTER("S"),
+        FILTER("F");
 
         private String symbol;
 

@@ -8,7 +8,7 @@ import java.util.*;
 public class ValuesStore {
 
     public enum ValuesGranularity {
-        FULL, THIRD
+        FULL, HALF, THIRD
     }
 
     private static final Map<ExposureParameterType, List<ExposureValue>> VALUES = new HashMap<>();
@@ -151,9 +151,25 @@ public class ValuesStore {
         isoValues.add(new ExposureValue("20000", new BigDecimal("20000"), ExposureParameterType.ISO, ValuesGranularity.THIRD));
         isoValues.add(new ExposureValue("25600", new BigDecimal("25600"), ExposureParameterType.ISO, ValuesGranularity.FULL));
 
+        List<ExposureValue> filterValues = new ArrayList<>();
+        filterValues.add(new ExposureValue("1/3", new BigDecimal("0.33"), ExposureParameterType.FILTER, ValuesGranularity.THIRD));
+        filterValues.add(new ExposureValue("1/2", new BigDecimal("0.50"), ExposureParameterType.FILTER, ValuesGranularity.HALF));
+        filterValues.add(new ExposureValue("2/3", new BigDecimal("0.66"), ExposureParameterType.FILTER, ValuesGranularity.THIRD));
+        filterValues.add(new ExposureValue("1", new BigDecimal("1"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("2", new BigDecimal("2"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("3", new BigDecimal("3"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("4", new BigDecimal("4"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("5", new BigDecimal("5"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("6", new BigDecimal("6"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("7", new BigDecimal("7"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("8", new BigDecimal("8"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("9", new BigDecimal("9"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+        filterValues.add(new ExposureValue("10", new BigDecimal("10"), ExposureParameterType.FILTER, ValuesGranularity.FULL));
+
         VALUES.put(ExposureParameterType.APERTURE, Collections.unmodifiableList(apertureValues));
         VALUES.put(ExposureParameterType.SHUTTER, Collections.unmodifiableList(shutterValues));
         VALUES.put(ExposureParameterType.ISO, Collections.unmodifiableList(isoValues));
+        VALUES.put(ExposureParameterType.FILTER, Collections.unmodifiableList(filterValues));
     }
 
     public static List<ExposureValue> getApertureValues() {
@@ -166,6 +182,10 @@ public class ValuesStore {
 
     public static List<ExposureValue> getIsoValues() {
         return VALUES.get(ExposureParameterType.ISO);
+    }
+
+    public static List<ExposureValue> getFilterValues() {
+        return VALUES.get(ExposureParameterType.FILTER);
     }
 
 }

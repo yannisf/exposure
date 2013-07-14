@@ -32,6 +32,11 @@ exposureModule.factory('Fetch', function($http) {
             return $http.get("api/shutter", {cache: true}).then(function (response) {
                 return response.data;
             });
+        },
+        filter: function() {
+            return $http.get("api/filter", {cache: true}).then(function (response) {
+                return response.data;
+            });
         }
     }
 });
@@ -279,17 +284,26 @@ exposureModule.controller('EquivalentExposureController',
 );
 
 exposureModule.controller('FilteredExposureController',
-    function($scope) {
+    function($scope, Fetch) {
         $scope.initial = {
             shuttersLoaderShow: true,
             filtersLoaderShow: true,
             shutter: null,
-            shutters: [{label: '1/10'}, {label: '1/100'}],
+            shutters: null,
             filter: null,
             filters: [{label: '1/3'}, {label: '1/2'}, {label: '2/3'}, {label: '1'}, {label: '2'}],
             initialize: function() {
-                this.shutter = $scope.initial.shutters[0];
-                this.filter = $scope.initial.filters[3];
+                Fetch.filter().then(function(data) {
+                    $scope.initial.filters  = data;
+                    $scope.initial.filter = $scope.initial.filters[4];
+                    $scope.initial.shuttersLoaderShow = false;
+                });
+
+                Fetch.shutter().then(function(data) {
+                    $scope.initial.shutters = data;
+                    $scope.initial.shutter = $scope.initial.shutters[19];
+                    $scope.initial.filtersLoaderShow = false;
+                });
             },
             updateShutter: function() {
                 this.adjust_show = true;
@@ -341,8 +355,10 @@ exposureModule.controller('FilteredExposureController',
                 return sum.toFixed(2);
             }
         }
+
         $scope.initial.initialize();
         $scope.filtered.shutter = 'XYZ';
+
     }
 );
 
