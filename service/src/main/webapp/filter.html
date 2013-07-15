@@ -1,4 +1,4 @@
-<form class="form-horizontal" ng-controller="FilteredExposureController">
+<form class="form-horizontal">
     <div class="row">
         <div class="span6">
             <h2>Initial</h2>
@@ -57,7 +57,7 @@
                         Adjusted shutter is out of scale.
                     </div>
                     <div class="alert alert-block alert-success" ng-show="filtered.success_show">
-                        Adjusted Shutter <span class="label label-success">{{filtered.shutter}}</span>
+                        Adjusted Shutter <span class="label label-success">{{filtered.shutter.label}}</span>
                     </div>
                 </div>
             </div>

@@ -8,8 +8,11 @@ exposureModule.config(function($routeProvider) {
             controller: 'EquivalentExposureController',
             templateUrl: 'equivalent.html'})
         .when('/filter', {
-            controller: 'EquivalentExposureController',
+            controller: 'FilteredExposureController',
             templateUrl: 'filter.html'})
+        .when('/dof', {
+            controller: 'DofController',
+            templateUrl: 'dof.html'})
         .otherwise({
             redirectTo: '/'
         });
@@ -60,6 +63,17 @@ exposureModule.factory('Equivalent', function($http) {
         shutter: function($scope) {
             var resource = $scope.initial.construct();
             return $http.get("api/expose/" + resource + "?toShutter=" + $scope.equivalent.shutter.value.index).then(
+                function (response) {
+                    return response.data;
+                });
+        }
+    };
+});
+
+exposureModule.factory('Filter', function($http) {
+    return {
+        shutter: function($scope, stops, shutter) {
+            return $http.get("api/filter/" + stops + "?shutter=" + shutter).then(
                 function (response) {
                     return response.data;
                 });
@@ -284,7 +298,7 @@ exposureModule.controller('EquivalentExposureController',
 );
 
 exposureModule.controller('FilteredExposureController',
-    function($scope, Fetch) {
+    function($scope, Fetch, Filter) {
         $scope.initial = {
             shuttersLoaderShow: true,
             filtersLoaderShow: true,
@@ -314,7 +328,8 @@ exposureModule.controller('FilteredExposureController',
                 console.log('Stacking filter: ', $scope.initial.filter);
                 this.adjust_show = true;
                 $scope.filtered.filters.push($scope.initial.filter);
-
+                $scope.filtered.info_show = false;
+                $scope.filtered.success_show = false;
             },
             adjust_show: false,
             adjust: function() {
@@ -322,6 +337,10 @@ exposureModule.controller('FilteredExposureController',
                 this.adjust_show = false;
                 $scope.filtered.info_show = true;
                 $scope.filtered.success_show = true;
+                Filter.shutter($scope, $scope.filtered.totalStrength(), $scope.initial.shutter.value).then(function(data) {
+                    console.log('Filtered: ', data);
+                    $scope.filtered.shutter = $scope.initial.shutters[Number(data.index)];
+                });
             },
             reset: function() {
                 console.log('Resetting...');
@@ -340,6 +359,7 @@ exposureModule.controller('FilteredExposureController',
                 return (this.filters.length > 0);
             },
             filters: [],
+            shutter: null,
             remove: function(index) {
                 console.log('Removing index', index)
                 $scope.initial.adjust_show = true;
