@@ -33,7 +33,7 @@ public class ShootingConditions implements Serializable {
 
     public ShootingConditions(String initialIsoLabel,
                               String initialApertureLabel,
-                              String initialShutterLabel) throws NoMatchException {
+                              String initialShutterLabel) throws NoMatchException, ExposureOutOfScaleException {
         iso = new Iso(initialIsoLabel);
         aperture = new Aperture(initialApertureLabel);
         shutter = new Shutter(initialShutterLabel);

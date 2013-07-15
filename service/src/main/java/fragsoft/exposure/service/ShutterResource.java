@@ -1,5 +1,6 @@
 package fragsoft.exposure.service;
 
+import fragsoft.exposure.model.exception.ExposureOutOfScaleException;
 import fragsoft.exposure.model.exception.NoMatchException;
 import fragsoft.exposure.model.parameters.ExposureValue;
 import fragsoft.exposure.model.parameters.Shutter;
@@ -46,7 +47,7 @@ public class ShutterResource {
     @GET
     @Produces("application/json")
     @Path(value = "match/{value}")
-    public ExposureValueDto getShutter(@PathParam("value") String value) throws NoMatchException {
+    public ExposureValueDto getShutter(@PathParam("value") String value) throws NoMatchException, ExposureOutOfScaleException {
         log.debug("GET Request (Shutter match [{}])", value);
         Shutter matchShutter = new Shutter(value);
         ExposureValue shutter = matchShutter.getValue();

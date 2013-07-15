@@ -330,13 +330,16 @@ exposureModule.controller('FilteredExposureController',
             },
             adjust: function() {
                 this.adjust_show = false;
-                $scope.filtered.info_show = true;
-                $scope.filtered.success_show = true;
                 Filter.shutter($scope,
                         $scope.filtered.totalStrength(),
                         $scope.initial.shutter.value).then(function(data) {
                     console.log('Filtered: ', data);
-                    $scope.filtered.shutter = $scope.initial.shutters[Number(data.index)];
+                    if (data.index == -1) {
+                        $scope.filtered.info_show = true;
+                    } else {
+                        $scope.filtered.success_show = true;
+                        $scope.filtered.shutter = $scope.initial.shutters[Number(data.index)];
+                    }
                 });
             },
             reset: function() {
@@ -377,7 +380,6 @@ exposureModule.controller('FilteredExposureController',
         }
 
         $scope.initial.initialize();
-
     }
 );
 

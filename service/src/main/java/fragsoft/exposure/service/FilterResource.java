@@ -1,5 +1,6 @@
 package fragsoft.exposure.service;
 
+import fragsoft.exposure.model.exception.ExposureOutOfScaleException;
 import fragsoft.exposure.model.exception.NoMatchException;
 import fragsoft.exposure.model.parameters.ExposureValue;
 import fragsoft.exposure.model.parameters.Shutter;
@@ -46,11 +47,19 @@ public class FilterResource {
         double multiplier = Math.pow(2, stops.doubleValue());
         double adjusted = multiplier * shutter.doubleValue();
 
-        Shutter adjustedShutterEv = new Shutter(String.valueOf(adjusted));
-        return new ExposureValueDto(
-                adjustedShutterEv.getValue().getLabel(),
-                adjustedShutterEv.getValue().getValue(),
-                adjustedShutterEv.getIndex());
+        ExposureValueDto exposureValueDto = null;
+        Shutter adjustedShutterEv = null;
+        try {
+            adjustedShutterEv = new Shutter(String.valueOf(adjusted));
+            exposureValueDto = new ExposureValueDto(adjustedShutterEv.getValue().getLabel(),
+                    adjustedShutterEv.getValue().getValue(),adjustedShutterEv.getIndex());
+        } catch (ExposureOutOfScaleException e) {
+            log.debug("Adjusted shutter is out of scale");
+            exposureValueDto = new ExposureValueDto("N/A", null, -1);
+        }
+
+        return exposureValueDto;
+
     }
 
 }

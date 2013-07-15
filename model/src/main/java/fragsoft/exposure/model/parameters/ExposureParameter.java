@@ -25,7 +25,7 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
         this.index = index;
     }
 
-    public ExposureParameter(String label) throws NoMatchException {
+    public ExposureParameter(String label) throws NoMatchException, ExposureOutOfScaleException {
         try {
             findExposureValueFromLabel(label);
         } catch (ExactMatchNotFoundException emnf) {
@@ -55,22 +55,16 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
         }
     }
 
-    void intelligentExposureValueFromLabel(String label) throws NoMatchException {
+    void intelligentExposureValueFromLabel(String label) throws NoMatchException, ExposureOutOfScaleException {
         String sanitized = dropNonNumericChars(label);
         LOG.info("Approximating {}[{}]", getSymbol(), sanitized);
         try {
             BigDecimal convertedValue = new BigDecimal(sanitized);
+            if (convertedValue.compareTo(getRightLimit()) > 0   || convertedValue.compareTo(getLeftLimit()) < 0 ) {
+                throw new ExposureOutOfScaleException();
+            }
             ExposureValue optimal = findOptimalMatch(convertedValue);
             this.index = getValues().indexOf(optimal);
-
-            if (this.index == 0) {
-                //TODO: Low border out of scale estimation
-            }
-
-            if (this.index == getValues().size() - 1) {
-                //TODO: High border out of scale
-            }
-
             LOG.debug("Approximation: {}[{}] => {}[{}]", getSymbol(), label, getSymbol(), getValue().getValue());
         } catch (NumberFormatException | NullPointerException ex) {
             throw new NoMatchException(ex);
@@ -111,6 +105,10 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
     public int compare(BigDecimal o1, BigDecimal o2) {
         return o1.compareTo(o2);
     }
+
+    abstract public BigDecimal getLeftLimit();
+
+    abstract public BigDecimal getRightLimit();
 
     abstract public String getSymbol();
 

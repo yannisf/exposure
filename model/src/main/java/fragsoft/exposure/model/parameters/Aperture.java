@@ -4,11 +4,14 @@ import fragsoft.exposure.model.exception.ExposureOutOfScaleException;
 import fragsoft.exposure.model.exception.NoMatchException;
 import fragsoft.exposure.model.parameters.ExposureValue.ExposureParameterType;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Aperture extends ExposureParameter {
 
     public static final ExposureParameterType TYPE = ExposureValue.ExposureParameterType.APERTURE;
+    public static final BigDecimal LEFT_LIMIT = new BigDecimal("0.89");
+    public static final BigDecimal RIGHT_LIMIT = new BigDecimal("46");
 
     Aperture() { }
 
@@ -16,8 +19,18 @@ public class Aperture extends ExposureParameter {
         super(index);
     }
 
-    public Aperture(String label) throws NoMatchException {
+    public Aperture(String label) throws NoMatchException, ExposureOutOfScaleException {
         super(label);
+    }
+
+    @Override
+    public BigDecimal getLeftLimit() {
+        return LEFT_LIMIT;
+    }
+
+    @Override
+    public BigDecimal getRightLimit() {
+        return RIGHT_LIMIT;
     }
 
     @Override

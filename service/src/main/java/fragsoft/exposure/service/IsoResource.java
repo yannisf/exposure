@@ -1,5 +1,6 @@
 package fragsoft.exposure.service;
 
+import fragsoft.exposure.model.exception.ExposureOutOfScaleException;
 import fragsoft.exposure.model.exception.NoMatchException;
 import fragsoft.exposure.model.parameters.ExposureValue;
 import fragsoft.exposure.model.parameters.Iso;
@@ -46,7 +47,7 @@ public class IsoResource {
     @GET
     @Produces("application/json")
     @Path(value = "match/{value}")
-    public ExposureValueDto getIso(@PathParam("value") String value) throws NoMatchException {
+    public ExposureValueDto getIso(@PathParam("value") String value) throws NoMatchException, ExposureOutOfScaleException {
         log.debug("GET Request (ISO match [{}])", value);
         Iso matchIso = new Iso(value);
         ExposureValue iso = matchIso.getValue();
