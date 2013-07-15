@@ -62,6 +62,15 @@ public abstract class ExposureParameter implements Comparator<BigDecimal> {
             BigDecimal convertedValue = new BigDecimal(sanitized);
             ExposureValue optimal = findOptimalMatch(convertedValue);
             this.index = getValues().indexOf(optimal);
+
+            if (this.index == 0) {
+                //TODO: Low border out of scale estimation
+            }
+
+            if (this.index == getValues().size() - 1) {
+                //TODO: High border out of scale
+            }
+
             LOG.debug("Approximation: {}[{}] => {}[{}]", getSymbol(), label, getSymbol(), getValue().getValue());
         } catch (NumberFormatException | NullPointerException ex) {
             throw new NoMatchException(ex);

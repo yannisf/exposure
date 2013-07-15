@@ -300,66 +300,66 @@ exposureModule.controller('EquivalentExposureController',
 exposureModule.controller('FilteredExposureController',
     function($scope, Fetch, Filter) {
         $scope.initial = {
-            shuttersLoaderShow: true,
-            filtersLoaderShow: true,
             shutter: null,
             shutters: null,
+            shuttersLoaderShow: true,
             filter: null,
-            filters: [{label: '1/3'}, {label: '1/2'}, {label: '2/3'}, {label: '1'}, {label: '2'}],
+            filters: null,
+            filtersLoaderShow: true,
+            adjust_show: false,
             initialize: function() {
-                Fetch.filter().then(function(data) {
-                    $scope.initial.filters  = data;
-                    $scope.initial.filter = $scope.initial.filters[4];
-                    $scope.initial.shuttersLoaderShow = false;
-                });
-
                 Fetch.shutter().then(function(data) {
                     $scope.initial.shutters = data;
                     $scope.initial.shutter = $scope.initial.shutters[19];
+                    $scope.initial.shuttersLoaderShow = false;
+                });
+                Fetch.filter().then(function(data) {
+                    $scope.initial.filters  = data;
+                    $scope.initial.filter = $scope.initial.filters[4];
                     $scope.initial.filtersLoaderShow = false;
                 });
             },
             updateShutter: function() {
                 this.adjust_show = true;
-                $scope.filtered.info_show = false;
-                $scope.filtered.success_show = false;
+                $scope.filtered.hideAlerts();
             },
             stackFilter: function() {
-                console.log('Stacking filter: ', $scope.initial.filter);
                 this.adjust_show = true;
+                $scope.filtered.hideAlerts();
                 $scope.filtered.filters.push($scope.initial.filter);
-                $scope.filtered.info_show = false;
-                $scope.filtered.success_show = false;
             },
-            adjust_show: false,
             adjust: function() {
-                console.log('Adjust...');
                 this.adjust_show = false;
                 $scope.filtered.info_show = true;
                 $scope.filtered.success_show = true;
-                Filter.shutter($scope, $scope.filtered.totalStrength(), $scope.initial.shutter.value).then(function(data) {
+                Filter.shutter($scope,
+                        $scope.filtered.totalStrength(),
+                        $scope.initial.shutter.value).then(function(data) {
                     console.log('Filtered: ', data);
                     $scope.filtered.shutter = $scope.initial.shutters[Number(data.index)];
                 });
             },
             reset: function() {
-                console.log('Resetting...');
-                this.initialize();
-                $scope.filtered.filters = [];
                 this.adjust_show = false;
-                $scope.filtered.info_show = false;
-                $scope.filtered.success_show = false;
+                $scope.initial.shutter = $scope.initial.shutters[19];
+                $scope.initial.filter = $scope.initial.filters[4];
+                $scope.filtered.hideAlerts();
+                $scope.filtered.filters = [];
             }
         };
 
         $scope.filtered = {
             info_show: false,
             success_show: false,
+            filters: [],
+            shutter: null,
+            hideAlerts: function() {
+                this.info_show = false;
+                this.success_show = false;
+            },
             table_show: function() {
                 return (this.filters.length > 0);
             },
-            filters: [],
-            shutter: null,
             remove: function(index) {
                 console.log('Removing index', index)
                 $scope.initial.adjust_show = true;
@@ -377,7 +377,6 @@ exposureModule.controller('FilteredExposureController',
         }
 
         $scope.initial.initialize();
-        $scope.filtered.shutter = 'XYZ';
 
     }
 );
